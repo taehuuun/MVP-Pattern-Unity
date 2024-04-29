@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ViewBase : MonoBehaviour
+public abstract class ViewBase : MonoBehaviour
 {
 
 }
