@@ -16,4 +16,9 @@ public abstract class ModelBase<T> : MonoBehaviour, IModel<T>
     {
         _onDataUpdated.RemoveListener(listener);
     }
+
+    public void ClearListener()
+    {
+        _onDataUpdated.RemoveAllListeners();
+    }
 }
