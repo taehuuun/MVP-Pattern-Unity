@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ModelBase : MonoBehaviour
+public abstract class ModelBase : MonoBehaviour
 {
-
+    
 }
