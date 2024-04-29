@@ -1,4 +1,4 @@
-public interface IModelBase
+public interface IModelBase<T>
 {
 
 }
