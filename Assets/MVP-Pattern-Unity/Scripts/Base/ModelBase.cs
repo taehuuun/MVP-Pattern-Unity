@@ -11,4 +11,9 @@ public abstract class ModelBase<T> : MonoBehaviour, IModel<T>
     {
         _onDataUpdated.AddListener(listener);
     }
+
+    public void RemoveListener(UnityAction<T> listener)
+    {
+        _onDataUpdated.RemoveListener(listener);
+    }
 }
