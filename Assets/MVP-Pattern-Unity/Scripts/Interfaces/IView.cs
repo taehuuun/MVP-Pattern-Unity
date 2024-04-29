@@ -1,4 +1,4 @@
-public interface IView
+public interface IView<T>
 {
-
+    void UpdateView(T data);
 }
