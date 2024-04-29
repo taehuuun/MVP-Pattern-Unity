@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class PresenterBase : MonoBehaviour
+public abstract class PresenterBase : MonoBehaviour, IPresenter
 {
 
 }
