@@ -6,6 +6,10 @@ public abstract class PresenterBase<T> : MonoBehaviour, IPresenter
     [SerializeField] private ViewBase<T> view;
 
 }
+    public virtual void AddViewListeners()
+    {
+        
+    }
 
     protected virtual void HandleModelUpdate(T data)
     {
