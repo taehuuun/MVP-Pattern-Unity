@@ -66,4 +66,14 @@ public abstract class ViewBase<T> : MonoBehaviour, IView<T>
         
         _events.Remove(eventName);
     }
+
+    public virtual void RemoveAllEvent()
+    {
+        foreach (var events in _events.Values)
+        {
+            events.RemoveAllListeners();
+        }
+
+        _events.Clear();
+    }
 }
