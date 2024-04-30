@@ -6,5 +6,7 @@ public abstract class ViewBase<T> : MonoBehaviour, IView<T>
 {
     private readonly Dictionary<string, UnityEventBase> _events = new();
 
+    protected abstract void Initialized();
+    
     public abstract void UpdateView(T data);
 }
