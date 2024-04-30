@@ -14,4 +14,14 @@ public abstract class ViewBase<T> : MonoBehaviour, IView<T>
     protected abstract void Initialize();
     
     public abstract void UpdateView(T data);
+
+    public virtual void AddListener(string eventName, UnityAction listener)
+    {
+        if (_events.ContainsKey(eventName))
+        {
+            _events.Add(eventName, new UnityEvent());
+        }
+
+        ((UnityEvent)_events[eventName]).AddListener(listener);
+    }
 }
