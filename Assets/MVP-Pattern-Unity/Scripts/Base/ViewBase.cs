@@ -34,4 +34,15 @@ public abstract class ViewBase<T> : MonoBehaviour, IView<T>
 
         ((UnityEvent<TU>)_events[eventName]).AddListener(listener);
     }
+
+    public virtual void RemoveListener(string eventName, UnityAction listener)
+    {
+        if (_events.TryGetValue(eventName, out var unityEventBase))
+        {
+            if (unityEventBase is UnityEvent unityEvent)
+            {
+                unityEvent.RemoveListener(listener);
+            }
+        }
+    }
 }
