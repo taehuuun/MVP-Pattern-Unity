@@ -1,7 +1,7 @@
 public interface IPresenter
 {
     void Initialize();
-    void AddViewListener();
+    void AddViewListeners();
     void ShowView();
     void HideView();
 }
