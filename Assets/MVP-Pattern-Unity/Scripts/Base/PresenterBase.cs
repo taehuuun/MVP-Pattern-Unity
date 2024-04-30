@@ -5,6 +5,11 @@ public abstract class PresenterBase<T> : MonoBehaviour, IPresenter
     [SerializeField] private ModelBase<T> model;
     [SerializeField] private ViewBase<T> view;
 
+    public virtual void Initialize()
+    {
+        model.AddListener(HandleModelUpdate);
+    }
+
     public virtual void AddViewListeners()
     {
         
