@@ -12,7 +12,7 @@ public abstract class ViewBase : MonoBehaviour, IView
 
     public virtual void AddListener(string eventName, UnityAction listener)
     {
-        if (_events.ContainsKey(eventName))
+        if (!_events.ContainsKey(eventName))
         {
             _events.Add(eventName, new UnityEvent());
         }
@@ -22,7 +22,7 @@ public abstract class ViewBase : MonoBehaviour, IView
 
     public virtual void AddListener<T>(string eventName, UnityAction<T> listener)
     {
-        if (_events.ContainsKey(eventName))
+        if (!_events.ContainsKey(eventName))
         {
             _events.Add(eventName, new UnityEvent<T>());
         }
