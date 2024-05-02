@@ -43,4 +43,10 @@ public class ClickerModel : ModelBase
         Data.gold += CurrentGoldPerClick;
         TriggerDataChange(this);
     }
+
+    public void SecAddGold()
+    {
+        Data.gold += CurrentGoldPerSec;
+        TriggerDataChange(this);
+    }
 }
