@@ -83,4 +83,11 @@ public class ClickerModel : ModelBase
         CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.goldPerSecLevel];
         TriggerDataChange(this);
     }
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.SetInt(_GOLD_KEY, Data.gold);
+        PlayerPrefs.SetInt(_GOLD_PER_SEC_LEVEL_KEY, Data.goldPerSecLevel);
+        PlayerPrefs.SetInt(_GOLD_PER_CLICK_LEVEL_KEY, Data.goldPerClickLevel);
+    }
 }
