@@ -87,4 +87,15 @@ public abstract class ViewBase<TModel> : MonoBehaviour, IView<TModel> where TMod
             }
         }
     }
+
+    public virtual void TriggerEvent<T>(string eventName, T args)
+    {
+        if (_events.TryGetValue(eventName, out var unityEventBase))
+        {
+            if (unityEventBase is UnityEvent<T> unityEvent)
+            {
+                unityEvent.Invoke(args);
+            }
+        }
+    }
 }
