@@ -30,4 +30,22 @@ public class ClickerView : ViewBase
     {
 
     }
+
+    private IEnumerator SizeUp(int gold)
+    {
+        float targetScaleValue = circle.localScale.x + gold * 0.001f;
+        Vector2 targetScale = new Vector2(targetScaleValue, targetScaleValue);
+        Vector2 originScale = circle.localScale;
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < _scaleUpTime)
+        {
+            transform.localScale = Vector2.Lerp(originScale, targetScale, elapsedTime / _scaleUpTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = targetScale;
+    }
 }
