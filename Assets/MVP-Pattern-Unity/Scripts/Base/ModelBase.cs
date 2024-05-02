@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class ModelBase<T> : MonoBehaviour, IModel<T>
+public abstract class ModelBase : MonoBehaviour, IModel
 {
     public T Data { get; protected set; }
 
-    private readonly UnityEvent<T> _onDataUpdated = new();
+    private readonly UnityEvent<ModelBase> _onDataUpdated = new();
 
     private void Start()
     {
@@ -17,12 +17,12 @@ public abstract class ModelBase<T> : MonoBehaviour, IModel<T>
         
     }
     
-    public void AddListener(UnityAction<T> listener)
+    public void AddListener(UnityAction<ModelBase> listener)
     {
         _onDataUpdated.AddListener(listener);
     }
 
-    public void RemoveListener(UnityAction<T> listener)
+    public void RemoveListener(UnityAction<ModelBase> listener)
     {
         _onDataUpdated.RemoveListener(listener);
     }
@@ -32,7 +32,7 @@ public abstract class ModelBase<T> : MonoBehaviour, IModel<T>
         _onDataUpdated.RemoveAllListeners();
     }
 
-    public void TriggerDataChange(T data)
+    public void TriggerDataChange(ModelBase data)
     {
         _onDataUpdated?.Invoke(data);
     }

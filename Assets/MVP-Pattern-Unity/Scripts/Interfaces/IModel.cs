@@ -1,9 +1,9 @@
 using UnityEngine.Events;
 
-public interface IModel<T>
+public interface IModel
 {
-    void AddListener(UnityAction<T> listener);
-    void RemoveListener(UnityAction<T> listener);
+    void AddListener(UnityAction<ModelBase> listener);
+    void RemoveListener(UnityAction<ModelBase> listener);
     void ClearListener();
-    void TriggerDataChange(T data);
+    void TriggerDataChange(ModelBase data);
 }
