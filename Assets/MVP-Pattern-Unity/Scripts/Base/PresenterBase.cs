@@ -37,8 +37,8 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
         view.gameObject.SetActive(false);
     }
 
-    protected virtual void HandleModelUpdate(ModelBase model)
+    protected virtual void HandleModelUpdate(ModelBase changedModel)
     {
-        view.UpdateView(model);
+        view.UpdateView(changedModel);
     }
 }
