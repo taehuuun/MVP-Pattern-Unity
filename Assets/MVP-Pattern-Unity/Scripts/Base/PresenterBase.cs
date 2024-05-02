@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public abstract class PresenterBase<T> : MonoBehaviour, IPresenter
+public abstract class PresenterBase : MonoBehaviour, IPresenter 
 {
-    [SerializeField] private ModelBase<T> model;
-    [SerializeField] private ViewBase<T> view;
+    [SerializeField] private ModelBase model;
+    [SerializeField] private ViewBase<ModelBase> view;
 
     protected void Start()
     {
@@ -37,8 +37,8 @@ public abstract class PresenterBase<T> : MonoBehaviour, IPresenter
         view.gameObject.SetActive(false);
     }
 
-    protected virtual void HandleModelUpdate(T data)
+    protected virtual void HandleModelUpdate(ModelBase model)
     {
-        view.UpdateView(data);
+        view.UpdateView(model);
     }
 }
