@@ -5,6 +5,11 @@ public class ClickerPresenter : PresenterBase
 {
     private readonly WaitForSeconds _goldPerSecDelay = new(1f);
     
+    private void HandleTouchScreen()
+    {
+        ((ClickerModel)model).ClickAddGold();
+    }
+    
     private void HandleUpgradePerClick()
     {
         ((ClickerModel)model).UpgradeGoldPerClick();
