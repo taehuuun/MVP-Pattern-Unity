@@ -15,6 +15,7 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
     protected virtual void OnDestroy()
     {
         model.ClearListener();
+        view.RemoveAllEvent();
     }
 
     public virtual void Initialize()
