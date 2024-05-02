@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// IModel 인터페이스를 상속 받는 모든 모델의 부모 추상 클래스
+/// </summary>
 public abstract class ModelBase : MonoBehaviour, IModel
 {
     private readonly UnityEvent<ModelBase> _onModelChanged = new();
