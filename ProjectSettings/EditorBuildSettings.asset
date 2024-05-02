@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/MVP-Pattern-Unity/Scenes/MVP-Sample-Clicker.unity
+    guid: a361f65261180f948adb57d00ac6dfee
   m_configObjects: {}
