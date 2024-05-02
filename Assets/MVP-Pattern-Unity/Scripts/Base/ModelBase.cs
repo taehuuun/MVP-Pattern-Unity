@@ -6,6 +6,11 @@ public abstract class ModelBase<T> : MonoBehaviour, IModel<T>
     public T Data { get; protected set; }
 
     private readonly UnityEvent<T> _onDataUpdated = new();
+
+    protected virtual void Initialize()
+    {
+        
+    }
     
     public void AddListener(UnityAction<T> listener)
     {
