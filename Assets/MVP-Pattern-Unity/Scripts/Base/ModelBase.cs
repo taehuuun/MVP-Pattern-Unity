@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public abstract class ModelBase : MonoBehaviour, IModel
 {
-    private readonly UnityEvent<ModelBase> _onDataUpdated = new();
+    private readonly UnityEvent<ModelBase> _onModelChanged = new();
 
     public virtual void Initialize()
     {
@@ -12,21 +12,21 @@ public abstract class ModelBase : MonoBehaviour, IModel
     
     public void AddListener(UnityAction<ModelBase> listener)
     {
-        _onDataUpdated.AddListener(listener);
+        _onModelChanged.AddListener(listener);
     }
 
     public void RemoveListener(UnityAction<ModelBase> listener)
     {
-        _onDataUpdated.RemoveListener(listener);
+        _onModelChanged.RemoveListener(listener);
     }
 
     public void ClearListener()
     {
-        _onDataUpdated.RemoveAllListeners();
+        _onModelChanged.RemoveAllListeners();
     }
 
     public void TriggerEvent()
     {
-        _onDataUpdated?.Invoke(this);
+        _onModelChanged?.Invoke(this);
     }
 }
