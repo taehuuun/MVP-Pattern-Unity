@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class ViewBase<T> : MonoBehaviour, IView<T> where T : ModelBase
+public abstract class ViewBase<TModel> : MonoBehaviour, IView<TModel> where TModel : ModelBase
 {
     private readonly Dictionary<string, UnityEventBase> _events = new();
 
@@ -13,7 +13,7 @@ public abstract class ViewBase<T> : MonoBehaviour, IView<T> where T : ModelBase
 
     protected abstract void Initialize();
     
-    public abstract void UpdateView(T model);
+    public abstract void UpdateView(TModel model);
 
     public virtual void AddListener(string eventName, UnityAction listener)
     {
@@ -25,14 +25,14 @@ public abstract class ViewBase<T> : MonoBehaviour, IView<T> where T : ModelBase
         ((UnityEvent)_events[eventName]).AddListener(listener);
     }
 
-    public virtual void AddListener<TU>(string eventName, UnityAction<TU> listener)
+    public virtual void AddListener<T>(string eventName, UnityAction<T> listener)
     {
         if (_events.ContainsKey(eventName))
         {
-            _events.Add(eventName, new UnityEvent<TU>());
+            _events.Add(eventName, new UnityEvent<T>());
         }
 
-        ((UnityEvent<TU>)_events[eventName]).AddListener(listener);
+        ((UnityEvent<T>)_events[eventName]).AddListener(listener);
     }
 
     public virtual void RemoveListener(string eventName, UnityAction listener)
@@ -46,11 +46,11 @@ public abstract class ViewBase<T> : MonoBehaviour, IView<T> where T : ModelBase
         }
     }
 
-    public virtual void RemoveListener<TU>(string eventName, UnityAction<TU> listener)
+    public virtual void RemoveListener<T>(string eventName, UnityAction<T> listener)
     {
         if (_events.TryGetValue(eventName, out var unityEventBase))
         {
-            if (unityEventBase is UnityEvent<TU> unityEvent)
+            if (unityEventBase is UnityEvent<T> unityEvent)
             {
                 unityEvent.RemoveListener(listener);
             }
