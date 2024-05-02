@@ -20,6 +20,9 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
 
     public virtual void Initialize()
     {
+        model.Initialize();
+        view.Initialize();
+        
         model.AddListener(HandleModelUpdate);
     }
 
