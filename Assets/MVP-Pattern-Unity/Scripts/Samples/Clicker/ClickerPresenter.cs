@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ClickerPresenter : MonoBehaviour
+public class ClickerPresenter : PresenterBase
 {
    
 }
