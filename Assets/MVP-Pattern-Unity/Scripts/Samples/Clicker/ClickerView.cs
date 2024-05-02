@@ -45,6 +45,11 @@ public class ClickerView : ViewBase
         TriggerEvent("TouchScreen");
     }
 
+    private void TriggerGoldPerClickUpgrade()
+    {
+        TriggerEvent("UpgradeGoldPerClick");
+    }
+
     private IEnumerator SizeUp(int gold)
     {
         float targetScaleValue = circle.localScale.x + gold * 0.001f;
