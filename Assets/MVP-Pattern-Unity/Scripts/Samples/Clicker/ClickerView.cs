@@ -40,6 +40,11 @@ public class ClickerView : ViewBase
         StartCoroutine(SizeUp(clickerModel.Data.gold));
     }
 
+    private void TriggerTouchScreen()
+    {
+        TriggerEvent("TouchScreen");
+    }
+
     private IEnumerator SizeUp(int gold)
     {
         float targetScaleValue = circle.localScale.x + gold * 0.001f;
