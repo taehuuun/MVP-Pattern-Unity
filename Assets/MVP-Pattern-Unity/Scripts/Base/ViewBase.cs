@@ -13,7 +13,7 @@ public abstract class ViewBase<T> : MonoBehaviour, IView<T> where T : ModelBase
 
     protected abstract void Initialize();
     
-    public abstract void UpdateView(T data);
+    public abstract void UpdateView(T model);
 
     public virtual void AddListener(string eventName, UnityAction listener)
     {
