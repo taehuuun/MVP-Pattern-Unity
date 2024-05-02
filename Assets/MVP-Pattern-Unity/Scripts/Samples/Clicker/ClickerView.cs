@@ -26,4 +26,8 @@ public class ClickerView : ViewBase
 
     private readonly float _scaleUpTime = 0.2f;
 
+    public override void UpdateView(ModelBase model)
+    {
+
+    }
 }
