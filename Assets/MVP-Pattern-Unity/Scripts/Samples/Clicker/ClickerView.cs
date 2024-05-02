@@ -33,9 +33,9 @@ public class ClickerView : ViewBase
         goldPerSecUpgradeBtn.onClick.AddListener(TriggerGoldPerSecUpgrade);
     }
 
-    public override void UpdateView(ModelBase model)
+    public override void UpdateView(ModelBase changedModel)
     {
-        ClickerModel clickerModel = model as ClickerModel;
+        ClickerModel clickerModel = changedModel as ClickerModel;
         goldPerClickText.text = $"+{clickerModel.CurrentGoldPerClick} / Click";
         goldPerSecText.text = $"+{clickerModel.CurrentGoldPerSec} / Sec";
         currentGoldText.text = $"{clickerModel.Data.gold} G";

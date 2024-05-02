@@ -8,7 +8,7 @@ public abstract class ViewBase : MonoBehaviour, IView
 
     public abstract void Initialize();
     
-    public abstract void UpdateView(ModelBase model);
+    public abstract void UpdateView(ModelBase changedModel);
 
     public virtual void AddListener(string eventName, UnityAction listener)
     {
