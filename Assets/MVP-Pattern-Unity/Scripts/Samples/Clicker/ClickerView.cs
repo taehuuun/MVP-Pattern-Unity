@@ -28,7 +28,16 @@ public class ClickerView : ViewBase
 
     public override void UpdateView(ModelBase model)
     {
+        ClickerModel clickerModel = model as ClickerModel;
+        goldPerClickText.text = $"+{clickerModel.CurrentGoldPerClick} / Click";
+        goldPerSecText.text = $"+{clickerModel.CurrentGoldPerSec} / Sec";
+        currentGoldText.text = $"{clickerModel.Data.gold} G";
+        nextGoldPerClickUpgradeBtnLevelText.text = $"Next Lv: {clickerModel.NextGoldPerClickLevel}";
+        nextGoldPerSecUpgradeBtnLevelText.text = $"Next Lv: {clickerModel.NextGoldPerSecLevel}";
+        nextGoldPerClickUpgradeBtnCostText.text = $"Cost: {clickerModel.NextGoldPerClickCost} G";
+        nextGoldPerSecUpgradeBtnCostText.text = $"Cost: {clickerModel.NextGoldPerSecCost} G";
 
+        StartCoroutine(SizeUp(clickerModel.Data.gold));
     }
 
     private IEnumerator SizeUp(int gold)
