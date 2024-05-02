@@ -1,6 +1,6 @@
 public class PlayerData
 {
-    public int gold = 1;
-    public int goldPerClickLevel = 1;
-    public int goldPerSecLevel = 1;
+    public int gold = 0;
+    public int goldPerClickLevel = 0;
+    public int goldPerSecLevel = 0;
 }
