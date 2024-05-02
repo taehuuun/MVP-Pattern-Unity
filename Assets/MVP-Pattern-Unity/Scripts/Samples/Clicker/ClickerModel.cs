@@ -37,4 +37,10 @@ public class ClickerModel : ModelBase
         CurrentGoldPerClick = _goldPerClickUpgrade.values[Data.goldPerClickLevel];
         CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.goldPerSecLevel];
     }
+
+    public void ClickAddGold()
+    {
+        Data.gold += CurrentGoldPerClick;
+        TriggerDataChange(this);
+    }
 }
