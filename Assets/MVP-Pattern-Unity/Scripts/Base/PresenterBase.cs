@@ -25,7 +25,7 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
         
         model.AddListener(HandleModelUpdate);
         
-        model.TriggerDataChange(model);
+        model.TriggerEvent();
     }
 
     public virtual void AddViewListeners()

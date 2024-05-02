@@ -41,13 +41,13 @@ public class ClickerModel : ModelBase
     public void ClickAddGold()
     {
         Data.gold += CurrentGoldPerClick;
-        TriggerDataChange(this);
+        TriggerEvent();
     }
 
     public void SecAddGold()
     {
         Data.gold += CurrentGoldPerSec;
-        TriggerDataChange(this);
+        TriggerEvent();
     }
 
     public void UpgradeGoldPerClick()
@@ -65,7 +65,7 @@ public class ClickerModel : ModelBase
         Data.gold -= cost;
         Data.goldPerClickLevel++;
         CurrentGoldPerClick = _goldPerClickUpgrade.values[Data.goldPerClickLevel];
-        TriggerDataChange(this);
+        TriggerEvent();
     }
     
     public void UpgradeGoldPerSec()
@@ -81,7 +81,7 @@ public class ClickerModel : ModelBase
         Data.gold -= cost;
         Data.goldPerSecLevel++;
         CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.goldPerSecLevel];
-        TriggerDataChange(this);
+        TriggerEvent();
     }
 
     private void OnApplicationQuit()

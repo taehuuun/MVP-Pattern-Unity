@@ -25,8 +25,8 @@ public abstract class ModelBase : MonoBehaviour, IModel
         _onDataUpdated.RemoveAllListeners();
     }
 
-    public void TriggerDataChange(ModelBase data)
+    public void TriggerEvent()
     {
-        _onDataUpdated?.Invoke(data);
+        _onDataUpdated?.Invoke(this);
     }
 }
