@@ -67,4 +67,20 @@ public class ClickerModel : ModelBase
         CurrentGoldPerClick = _goldPerClickUpgrade.values[Data.goldPerClickLevel];
         TriggerDataChange(this);
     }
+    
+    public void UpgradeGoldPerSec()
+    {
+        int cost = _goldPerClickUpgrade.costs[NextGoldPerSecLevel];
+        
+        if (cost > Data.gold)
+        {
+            Debug.Log("초 당 골드 증가 업그레이드 비용 부족");
+            return;
+        }
+
+        Data.gold -= cost;
+        Data.goldPerSecLevel++;
+        CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.goldPerSecLevel];
+        TriggerDataChange(this);
+    }
 }
