@@ -10,6 +10,11 @@ public interface IModel
     /// </summary>
     /// <param name="listener">ModelBase 상속 클래스를 매개 받는 UnityAction 리스너</param>
     void AddListener(UnityAction<ModelBase> listener);
+    
+    /// <summary>
+    /// 모델 내 등록 된 이벤트 리스너를 제거하는 메서드
+    /// </summary>
+    /// <param name="listener">ModelBase 상속 클래스를 매개 받는 UnityAction 리스너</param>
     void RemoveListener(UnityAction<ModelBase> listener);
     void ClearListener();
     
