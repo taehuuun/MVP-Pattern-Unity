@@ -8,6 +8,9 @@ public abstract class ModelBase : MonoBehaviour, IModel
 {
     private readonly UnityEvent<ModelBase> _onModelChanged = new();     // 모델 변경 시 발생하는 이벤트
 
+    /// <summary>
+    /// Model의 초기화를 진행하는 메서드
+    /// </summary>
     public virtual void Initialize()
     {
         
