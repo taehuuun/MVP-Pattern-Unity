@@ -5,7 +5,7 @@ public abstract class ModelBase : MonoBehaviour, IModel
 {
     private readonly UnityEvent<ModelBase> _onDataUpdated = new();
 
-    protected virtual void Initialize()
+    public virtual void Initialize()
     {
         
     }
