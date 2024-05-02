@@ -1,6 +1,4 @@
-using UnityEngine;
-
-public class ClickerModel : MonoBehaviour
+public class ClickerModel : ModelBase
 {
     
 }
