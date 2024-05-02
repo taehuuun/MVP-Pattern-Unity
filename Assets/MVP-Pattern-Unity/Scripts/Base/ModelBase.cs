@@ -3,8 +3,6 @@ using UnityEngine.Events;
 
 public abstract class ModelBase : MonoBehaviour, IModel
 {
-    public T Data { get; protected set; }
-
     private readonly UnityEvent<ModelBase> _onDataUpdated = new();
 
     private void Start()
