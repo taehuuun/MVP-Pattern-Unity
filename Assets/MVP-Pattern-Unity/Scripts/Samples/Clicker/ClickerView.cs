@@ -1,5 +1,5 @@
 using UnityEngine;
 
-public class ClickerView : MonoBehaviour
+public class ClickerView : ViewBase
 {
 }
