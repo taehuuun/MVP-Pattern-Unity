@@ -25,6 +25,13 @@ public class ClickerView : ViewBase
     [SerializeField] private Transform circle;
 
     private readonly float _scaleUpTime = 0.2f;
+    
+    public override void Initialize()
+    {
+        screenBtn.onClick.AddListener(TriggerTouchScreen);
+        goldPerClickUpgradeBtn.onClick.AddListener(TriggerGoldPerClickUpgrade);
+        goldPerSecUpgradeBtn.onClick.AddListener(TriggerGoldPerSecUpgrade);
+    }
 
     public override void UpdateView(ModelBase model)
     {
@@ -48,6 +55,11 @@ public class ClickerView : ViewBase
     private void TriggerGoldPerClickUpgrade()
     {
         TriggerEvent("UpgradeGoldPerClick");
+    }
+
+    private void TriggerGoldPerSecUpgrade()
+    {
+        TriggerEvent("UpgradeGoldPerSec");
     }
 
     private IEnumerator SizeUp(int gold)
