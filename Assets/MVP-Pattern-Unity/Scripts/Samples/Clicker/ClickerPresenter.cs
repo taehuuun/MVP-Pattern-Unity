@@ -5,6 +5,13 @@ public class ClickerPresenter : PresenterBase
 {
     private readonly WaitForSeconds _goldPerSecDelay = new(1f);
     
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        StartCoroutine(GetGoldPerSec());
+    }
+    
     public override void AddViewListeners()
     {
         base.AddViewListeners();
