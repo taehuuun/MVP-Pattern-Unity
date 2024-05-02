@@ -1,4 +1,4 @@
-public interface IView<T> where T : ModelBase
+public interface IView
 {
-    void UpdateView(T model);
+    void UpdateView(ModelBase model);
 }
