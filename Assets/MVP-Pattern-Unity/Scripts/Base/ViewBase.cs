@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class ViewBase<T> : MonoBehaviour, IView<T>
+public abstract class ViewBase<T> : MonoBehaviour, IView<T> where T : ModelBase
 {
     private readonly Dictionary<string, UnityEventBase> _events = new();
 
