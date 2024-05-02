@@ -6,7 +6,7 @@ using UnityEngine.Events;
 /// </summary>
 public abstract class ModelBase : MonoBehaviour, IModel
 {
-    private readonly UnityEvent<ModelBase> _onModelChanged = new();
+    private readonly UnityEvent<ModelBase> _onModelChanged = new();     // 모델 변경 시 발생하는 이벤트
 
     public virtual void Initialize()
     {
