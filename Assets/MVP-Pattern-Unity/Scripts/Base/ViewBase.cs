@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class ViewBase<TModel> : MonoBehaviour, IView<TModel> where TModel : ModelBase
+public abstract class ViewBase : MonoBehaviour, IView
 {
     private readonly Dictionary<string, UnityEventBase> _events = new();
 
@@ -13,7 +13,7 @@ public abstract class ViewBase<TModel> : MonoBehaviour, IView<TModel> where TMod
 
     protected abstract void Initialize();
     
-    public abstract void UpdateView(TModel model);
+    public abstract void UpdateView(ModelBase model);
 
     public virtual void AddListener(string eventName, UnityAction listener)
     {

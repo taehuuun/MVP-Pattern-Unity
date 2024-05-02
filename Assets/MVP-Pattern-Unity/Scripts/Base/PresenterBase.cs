@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class PresenterBase : MonoBehaviour, IPresenter 
 {
     [SerializeField] private ModelBase model;
-    [SerializeField] private ViewBase<ModelBase> view;
+    [SerializeField] protected ViewBase view;
 
     protected void Start()
     {
