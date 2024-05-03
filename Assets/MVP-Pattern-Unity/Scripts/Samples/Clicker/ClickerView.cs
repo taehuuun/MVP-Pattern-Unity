@@ -26,7 +26,7 @@ public class ClickerView : ViewBase<ClickerModel>
 
     private readonly float _scaleUpTime = 0.2f;                                 // 원의 사이즈 업이 걸리는 시간
     
-    /// <inheritdoc cref="ViewBase.Initialize"/>
+    /// <inheritdoc cref="ViewBase{TModel}.Initialize"/>
     public override void Initialize(PresenterBase<ClickerModel> presenter)
     {
         base.Initialize(presenter);
@@ -36,7 +36,7 @@ public class ClickerView : ViewBase<ClickerModel>
         goldPerSecUpgradeBtn.onClick.AddListener(TriggerGoldPerSecUpgrade);
     }
 
-    /// <inheritdoc cref="ViewBase.UpdateView"/>
+    /// <inheritdoc cref="ViewBase{TModel}.UpdateView"/>
     public override void UpdateView(ModelBase changedModel)
     {
         ClickerModel clickerModel = changedModel as ClickerModel;
