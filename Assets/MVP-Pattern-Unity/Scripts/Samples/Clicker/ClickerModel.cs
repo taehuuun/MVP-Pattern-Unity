@@ -20,6 +20,7 @@ public class ClickerModel : ModelBase
     private const string _GOLD_PER_SEC_LEVEL_KEY = "ClickerGoldPerSecLevel";                    // 초 당 골드 업그레이드 레벨 저장을 위한 PlayerPrefs 키 값
     private const string _GOLD_KEY = "ClickerGold";                                             // 현재 보유 골드 저장을 위한 PlayerPrefs 키 값
 
+    /// <inheritdoc cref="ModelBase.Initialize"/>
     public override void Initialize()
     {
         base.Initialize();
