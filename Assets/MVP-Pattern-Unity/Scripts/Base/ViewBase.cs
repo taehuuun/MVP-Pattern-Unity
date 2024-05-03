@@ -124,6 +124,12 @@ public abstract class ViewBase : MonoBehaviour, IView
         }
     }
 
+    /// <summary>
+    /// eventName에 해당하는 인자를 1개를 가지는 이벤트를 발생 시키는 메서드
+    /// </summary>
+    /// <param name="eventName">발생 시킬 이벤트 명</param>
+    /// <param name="args">이벤트 발생 시 인자</param>
+    /// <typeparam name="T">모든 타입</typeparam>
     public virtual void TriggerEvent<T>(string eventName, T args)
     {
         if (_events.TryGetValue(eventName, out var unityEventBase))
