@@ -37,18 +37,17 @@ public class ClickerView : ViewBase<ClickerModel>
     }
 
     /// <inheritdoc cref="ViewBase{TModel}.UpdateView"/>
-    public override void UpdateView(ModelBase changedModel)
+    public override void UpdateView(ClickerModel changedModel)
     {
-        ClickerModel clickerModel = changedModel as ClickerModel;
-        goldPerClickText.text = $"+{clickerModel.CurrentGoldPerClick} / Click";
-        goldPerSecText.text = $"+{clickerModel.CurrentGoldPerSec} / Sec";
-        currentGoldText.text = $"{clickerModel.Data.gold} G";
-        nextGoldPerClickUpgradeBtnLevelText.text = $"Next Lv: {clickerModel.NextGoldPerClickLevel}";
-        nextGoldPerSecUpgradeBtnLevelText.text = $"Next Lv: {clickerModel.NextGoldPerSecLevel}";
-        nextGoldPerClickUpgradeBtnCostText.text = $"Cost: {clickerModel.NextGoldPerClickCost} G";
-        nextGoldPerSecUpgradeBtnCostText.text = $"Cost: {clickerModel.NextGoldPerSecCost} G";
+        goldPerClickText.text = $"+{changedModel.CurrentGoldPerClick} / Click";
+        goldPerSecText.text = $"+{changedModel.CurrentGoldPerSec} / Sec";
+        currentGoldText.text = $"{changedModel.Data.gold} G";
+        nextGoldPerClickUpgradeBtnLevelText.text = $"Next Lv: {changedModel.NextGoldPerClickLevel}";
+        nextGoldPerSecUpgradeBtnLevelText.text = $"Next Lv: {changedModel.NextGoldPerSecLevel}";
+        nextGoldPerClickUpgradeBtnCostText.text = $"Cost: {changedModel.NextGoldPerClickCost} G";
+        nextGoldPerSecUpgradeBtnCostText.text = $"Cost: {changedModel.NextGoldPerSecCost} G";
 
-        StartCoroutine(SizeUp(clickerModel.Data.gold));
+        StartCoroutine(SizeUp(changedModel.Data.gold));
     }
 
     /// <summary>

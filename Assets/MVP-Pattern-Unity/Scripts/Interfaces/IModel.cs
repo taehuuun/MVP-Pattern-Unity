@@ -9,13 +9,13 @@ public interface IModel
     /// 모델 내 이벤트에 리스너를 추가하는 메서드
     /// </summary>
     /// <param name="listener">추가 할 리스너(ModelBase)</param>
-    void AddListener(UnityAction<ModelBase> listener);
+    void AddListener(UnityAction listener);
     
     /// <summary>
     /// 모델 내 등록 된 이벤트 리스너를 제거하는 메서드
     /// </summary>
     /// <param name="listener">제거 할 리스너(ModelBase)</param>
-    void RemoveListener(UnityAction<ModelBase> listener);
+    void RemoveListener(UnityAction listener);
     
     /// <summary>
     /// 모델 내 등록 된 모든 리스너를 제거하는 메서드

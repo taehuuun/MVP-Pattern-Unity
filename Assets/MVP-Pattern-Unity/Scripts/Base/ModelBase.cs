@@ -6,7 +6,7 @@ using UnityEngine.Events;
 /// </summary>
 public abstract class ModelBase : MonoBehaviour, IModel
 {
-    private readonly UnityEvent<ModelBase> _onModelChanged = new();     // 모델 변경 시 발생하는 이벤트
+    private readonly UnityEvent _onModelChanged = new();     // 모델 변경 시 발생하는 이벤트
 
     /// <summary>
     /// Model의 초기화를 진행하는 메서드
@@ -17,13 +17,13 @@ public abstract class ModelBase : MonoBehaviour, IModel
     }
     
     /// <inheritdoc cref="IModel.AddListener"/>
-    public void AddListener(UnityAction<ModelBase> listener)
+    public void AddListener(UnityAction listener)
     {
         _onModelChanged.AddListener(listener);
     }
 
     /// <inheritdoc cref="IModel.RemoveListener"/>
-    public void RemoveListener(UnityAction<ModelBase> listener)
+    public void RemoveListener(UnityAction listener)
     {
         _onModelChanged.RemoveListener(listener);
     }
@@ -37,6 +37,6 @@ public abstract class ModelBase : MonoBehaviour, IModel
     /// <inheritdoc cref="IModel.TriggerEvent"/>
     public void TriggerEvent()
     {
-        _onModelChanged?.Invoke(this);
+        _onModelChanged?.Invoke();
     }
 }
