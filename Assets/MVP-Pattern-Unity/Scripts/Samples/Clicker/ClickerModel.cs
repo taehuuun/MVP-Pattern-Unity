@@ -5,20 +5,20 @@ using UnityEngine;
 /// </summary>
 public class ClickerModel : ModelBase
 {
-    public PlayerData Data { get; private set; }
-    public int CurrentGoldPerClick { get; private set; }
-    public int CurrentGoldPerSec { get; private set; }
-    public int NextGoldPerClickCost => _goldPerClickUpgrade.costs[Data.goldPerClickLevel+1];
-    public int NextGoldPerSecCost => _goldPerSecUpgrade.costs[Data.goldPerSecLevel+1];
-    public int NextGoldPerClickLevel => Data.goldPerClickLevel + 1;
-    public int NextGoldPerSecLevel => Data.goldPerSecLevel + 1;
+    public PlayerData Data { get; private set; }                                                // 플레이어 데이터 (보유 골드, 각 업그레이드 레벨)
+    public int CurrentGoldPerClick { get; private set; }                                        // 현재 클릭 당 획득 골드 량
+    public int CurrentGoldPerSec { get; private set; }                                          // 현재 초 당 획득 골드 량
+    public int NextGoldPerClickCost => _goldPerClickUpgrade.costs[Data.goldPerClickLevel+1];    // 다음 레벨의 클릭 당 골드 업그레이드 비용
+    public int NextGoldPerSecCost => _goldPerSecUpgrade.costs[Data.goldPerSecLevel+1];          // 다음 레벨의 초 당 골드 업그레이드 비용
+    public int NextGoldPerClickLevel => Data.goldPerClickLevel + 1;                             // 클릭 당 골드 업그레이드의 다음 레벨
+    public int NextGoldPerSecLevel => Data.goldPerSecLevel + 1;                                 // 초 당 골드 업그레이드의 다음 레벨
     
-    private Upgrade _goldPerClickUpgrade;
-    private Upgrade _goldPerSecUpgrade;
+    private Upgrade _goldPerClickUpgrade;                                                       // 클릭 당 골드 업그레이드 정보
+    private Upgrade _goldPerSecUpgrade;                                                         // 초 당 골드 업그레이드 정보
 
-    private const string _GOLD_PER_CLICK_LEVEL_KEY = "ClickerGoldPerClickLevel";
-    private const string _GOLD_PER_SEC_LEVEL_KEY = "ClickerGoldPerSecLevel";
-    private const string _GOLD_KEY = "ClickerGold";
+    private const string _GOLD_PER_CLICK_LEVEL_KEY = "ClickerGoldPerClickLevel";                // 클릭 당 골드 업그레이드 레벨 저장을 위한 PlayerPrefs 키 값
+    private const string _GOLD_PER_SEC_LEVEL_KEY = "ClickerGoldPerSecLevel";                    // 초 당 골드 업그레이드 레벨 저장을 위한 PlayerPrefs 키 값
+    private const string _GOLD_KEY = "ClickerGold";                                             // 현재 보유 골드 저장을 위한 PlayerPrefs 키 값
 
     public override void Initialize()
     {
