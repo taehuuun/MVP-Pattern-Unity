@@ -5,8 +5,8 @@ using UnityEngine;
 /// </summary>
 public abstract class PresenterBase : MonoBehaviour, IPresenter 
 {
-    [SerializeField] protected ModelBase model;
-    [SerializeField] protected ViewBase view;
+    [SerializeField] protected ModelBase model;     // ModelBase를 상속 받는 model 필드
+    [SerializeField] protected ViewBase view;       // ViewBase를 상속 받는 view 필드
 
     protected void Start()
     {
