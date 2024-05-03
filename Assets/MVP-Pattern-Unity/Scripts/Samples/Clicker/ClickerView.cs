@@ -65,6 +65,9 @@ public class ClickerView : ViewBase
         TriggerEvent("UpgradeGoldPerClick");
     }
 
+    /// <summary>
+    /// 초 당 골드 증가량 업그레이드 이벤트를 트리거 하는 메서드
+    /// </summary>
     private void TriggerGoldPerSecUpgrade()
     {
         TriggerEvent("UpgradeGoldPerSec");
