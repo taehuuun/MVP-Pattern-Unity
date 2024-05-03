@@ -56,6 +56,9 @@ public class ClickerModel : ModelBase
         TriggerEvent();
     }
 
+    /// <summary>
+    /// 초 당 골드 증가량 만큼 골드를 증가 시키는 메서드 
+    /// </summary>
     public void SecAddGold()
     {
         Data.gold += CurrentGoldPerSec;
