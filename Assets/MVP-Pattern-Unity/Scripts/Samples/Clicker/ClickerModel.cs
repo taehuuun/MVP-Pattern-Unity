@@ -23,14 +23,18 @@ public class ClickerModel : ModelBase
     /// <inheritdoc cref="ModelBase.Initialize"/>
     public override void Initialize()
     {
+        // ModelBase 클래스의 Initialize 메서드 진행
         base.Initialize();
 
+        // 각 업그레이드 정보가 담긴 SO 파일을 리소스 폴더 내에서 로드
         Upgrade goldPerClick = Resources.Load<Upgrade>("Clicker/SO/GoldPerClick");
         Upgrade goldPerSec = Resources.Load<Upgrade>("Clicker/SO/GoldPerSec");
 
+        // 로드 된 업그레이드 정보를 각 필드에 대입
         _goldPerClickUpgrade = goldPerClick;
         _goldPerSecUpgrade = goldPerSec;
 
+        // PlayerPrefs에 저장된 플레이어 정보를 로드 없을 경우, 기본 값인 0으로 세팅
         Data = new ()
         {
             gold = PlayerPrefs.GetInt(_GOLD_KEY,0),
@@ -38,6 +42,7 @@ public class ClickerModel : ModelBase
             goldPerSecLevel = PlayerPrefs.GetInt(_GOLD_PER_SEC_LEVEL_KEY,0)
         };
         
+        // 현재 클릭, 초 당 골드 증가량을 세팅
         CurrentGoldPerClick = _goldPerClickUpgrade.values[Data.goldPerClickLevel];
         CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.goldPerSecLevel];
     }
