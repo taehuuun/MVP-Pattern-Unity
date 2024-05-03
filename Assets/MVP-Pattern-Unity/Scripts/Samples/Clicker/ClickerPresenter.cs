@@ -46,6 +46,9 @@ public class ClickerPresenter : PresenterBase
         ((ClickerModel)model).UpgradeGoldPerSec();
     }
     
+    /// <summary>
+    /// 매 초 마다 골드를 증가 시키는 코루틴 메서드
+    /// </summary>
     private IEnumerator GetGoldPerSec()
     {
         while (true)
