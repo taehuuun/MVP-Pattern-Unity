@@ -49,6 +49,11 @@ public abstract class ViewBase : MonoBehaviour, IView
         ((UnityEvent<T>)_events[eventName]).AddListener(listener);
     }
 
+    /// <summary>
+    /// eventName에 해당하는 이벤트의 리스너를 제거하는 메서드
+    /// </summary>
+    /// <param name="eventName">이벤트 명</param>
+    /// <param name="listener">제거 할 리스너</param>
     public virtual void RemoveListener(string eventName, UnityAction listener)
     {
         if (_events.TryGetValue(eventName, out var unityEventBase))
