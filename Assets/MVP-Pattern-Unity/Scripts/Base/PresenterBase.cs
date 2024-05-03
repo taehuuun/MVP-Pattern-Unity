@@ -18,6 +18,9 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
         AddViewListeners();
     }
 
+    /// <summary>
+    /// 오브젝트 파괴 시 호출되는 메서드
+    /// </summary>
     protected virtual void OnDestroy()
     {
         model.ClearListener();
