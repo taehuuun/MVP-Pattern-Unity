@@ -7,6 +7,7 @@ using UnityEngine.Events;
 /// </summary>
 public abstract class ViewBase : MonoBehaviour, IView
 {
+    // View의 상호작용 이벤트를 관리하는 딕셔너리 필드
     private readonly Dictionary<string, UnityEventBase> _events = new();
 
     public abstract void Initialize();
