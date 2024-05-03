@@ -4,14 +4,14 @@ using UnityEngine.Events;
 /// <summary>
 /// IView 인터페이스를 상속 받는 모든 View의 부모 추상 클래스
 /// </summary>
-public abstract class ViewBase : MonoBehaviour, IView
+public abstract class ViewBase<TModel> : MonoBehaviour, IView where TModel : ModelBase
 {
-    private PresenterBase _presenter;
+    private PresenterBase<TModel> _presenter;
 
     /// <summary>
     /// View의 초기화를 진행하는 메서드
     /// </summary>
-    public virtual void Initialize(PresenterBase presenter)
+    public virtual void Initialize(PresenterBase<TModel> presenter)
     {
         _presenter = presenter;
     }

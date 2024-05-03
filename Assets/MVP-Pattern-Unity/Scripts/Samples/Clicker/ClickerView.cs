@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ClickerView : ViewBase
+public class ClickerView : ViewBase<ClickerModel>
 {
     [Header("Header UI")]
     [SerializeField] private TMP_Text goldPerClickText;                         // 현재 클릭 당 골드 증가량 텍스트
@@ -27,7 +27,7 @@ public class ClickerView : ViewBase
     private readonly float _scaleUpTime = 0.2f;                                 // 원의 사이즈 업이 걸리는 시간
     
     /// <inheritdoc cref="ViewBase.Initialize"/>
-    public override void Initialize(PresenterBase presenter)
+    public override void Initialize(PresenterBase<ClickerModel> presenter)
     {
         base.Initialize(presenter);
         

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ClickerPresenter : PresenterBase
+public class ClickerPresenter : PresenterBase<ClickerModel>
 {
     private readonly WaitForSeconds _goldPerSecDelay = new(1f);     // 1초 딜레이
     
@@ -22,7 +22,7 @@ public class ClickerPresenter : PresenterBase
     /// </summary>
     private void HandleTouchScreen()
     {
-        ((ClickerModel)model).ClickAddGold();
+        model.ClickAddGold();
     }
     
     /// <summary>
@@ -30,7 +30,7 @@ public class ClickerPresenter : PresenterBase
     /// </summary>
     private void HandleUpgradePerClick()
     {
-        ((ClickerModel)model).UpgradeGoldPerClick();
+        model.UpgradeGoldPerClick();
     }
     
     /// <summary>
@@ -38,7 +38,7 @@ public class ClickerPresenter : PresenterBase
     /// </summary>
     private void HandleUpgradePerSec()
     {
-        ((ClickerModel)model).UpgradeGoldPerSec();
+        model.UpgradeGoldPerSec();
     }
     
     /// <summary>
@@ -48,7 +48,7 @@ public class ClickerPresenter : PresenterBase
     {
         while (true)
         {
-            ((ClickerModel)model).SecAddGold();
+            model.SecAddGold();
             yield return _goldPerSecDelay;
         }
     }

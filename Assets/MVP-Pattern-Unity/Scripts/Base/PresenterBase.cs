@@ -5,13 +5,13 @@ using UnityEngine.Events;
 /// <summary>
 /// IPresenter 인터페이스를 상속 받는 모든 Presenter의 부모 추상 클래스
 /// </summary>
-public abstract class PresenterBase : MonoBehaviour, IPresenter 
+public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TModel : ModelBase 
 {
     // View의 상호작용 이벤트를 관리하는 딕셔너리 필드
     public Dictionary<string, UnityEventBase> Events { get; }= new();
     
-    [SerializeField] protected ModelBase model;     // ModelBase를 상속 받는 model 필드
-    [SerializeField] protected ViewBase view;       // ViewBase를 상속 받는 view 필드
+    [SerializeField] protected TModel model;                // ModelBase를 상속 받는 model 필드
+    [SerializeField] protected ViewBase<TModel> view;       // ViewBase를 상속 받는 view 필드
 
     /// <summary>
     /// 최초 활성화 시 호출되는 메서드
@@ -41,7 +41,7 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
         model.TriggerEvent();
     }
 
-/// <summary>
+    /// <summary>
     /// eventName에 해당하는 이벤트에 리스너를 추가 시키는 메서드
     /// </summary>
     /// <param name="eventName">이벤트 명</param>
