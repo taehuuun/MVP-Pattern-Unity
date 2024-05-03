@@ -109,6 +109,10 @@ public abstract class ViewBase : MonoBehaviour, IView
         _events.Clear();
     }
 
+    /// <summary>
+    /// eventName에 해당하는 이벤트를 발생 시키는 메서드
+    /// </summary>
+    /// <param name="eventName">발생 시킬 이벤트 명</param>
     public virtual void TriggerEvent(string eventName)
     {
         if (_events.TryGetValue(eventName, out var unityEventBase))
