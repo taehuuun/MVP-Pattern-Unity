@@ -18,6 +18,11 @@ public abstract class ViewBase : MonoBehaviour, IView
     /// <inheritdoc cref="IView.UpdateView"/>
     public abstract void UpdateView(ModelBase changedModel);
 
+    /// <summary>
+    /// eventName에 해당하는 이벤트에 리스너를 추가 시키는 메서드
+    /// </summary>
+    /// <param name="eventName">이벤트 명</param>
+    /// <param name="listener">추가 할 리스너</param>
     public virtual void AddListener(string eventName, UnityAction listener)
     {
         if (!_events.ContainsKey(eventName))
