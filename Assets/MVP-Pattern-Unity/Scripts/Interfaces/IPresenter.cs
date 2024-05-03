@@ -12,6 +12,10 @@ public interface IPresenter
     /// View에 리스너틑 추가하는 메서드
     /// </summary>
     void AddViewListeners();
+    
+    /// <summary>
+    /// View를 활성화 시키는 메서드
+    /// </summary>
     void ShowView();
     void HideView();
 }
