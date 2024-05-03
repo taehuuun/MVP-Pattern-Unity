@@ -49,6 +49,9 @@ public class ClickerView : ViewBase
         StartCoroutine(SizeUp(clickerModel.Data.gold));
     }
 
+    /// <summary>
+    /// 클릭 시 골드 증가 이벤트를 트리거 하는 메서드
+    /// </summary>
     private void TriggerTouchScreen()
     {
         TriggerEvent("TouchScreen");
