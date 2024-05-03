@@ -16,7 +16,10 @@ public abstract class ViewBase<TModel> : MonoBehaviour, IView where TModel : Mod
         _presenter = presenter;
     }
     
-    /// <inheritdoc cref="IView.UpdateView"/>
+    /// <summary>
+    /// Model 변경 시 View를 업데이트 하는 메서드
+    /// </summary>
+    /// <param name="changedModel">변경 모델</param>
     public abstract void UpdateView(ModelBase changedModel);
 
     /// <summary>
