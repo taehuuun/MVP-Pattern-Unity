@@ -88,7 +88,7 @@ public class ClickerView : ViewBase<ClickerModel>
 
         while (elapsedTime < _scaleUpTime)
         {
-            transform.localScale = Vector2.Lerp(originScale, targetScale, elapsedTime / _scaleUpTime);
+            circle.localScale = Vector2.Lerp(originScale, targetScale, elapsedTime / _scaleUpTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
