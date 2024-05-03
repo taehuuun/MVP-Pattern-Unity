@@ -30,6 +30,9 @@ public class ClickerPresenter : PresenterBase
         ((ClickerModel)model).ClickAddGold();
     }
     
+    /// <summary>
+    /// 클릭 당 골드 증가량 업그레이드 이벤트 핸들링 메서드
+    /// </summary>
     private void HandleUpgradePerClick()
     {
         ((ClickerModel)model).UpgradeGoldPerClick();
