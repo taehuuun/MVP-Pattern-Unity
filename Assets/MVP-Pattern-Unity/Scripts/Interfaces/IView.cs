@@ -3,5 +3,9 @@
 /// </summary>
 public interface IView
 {
+    /// <summary>
+    /// 모델의 변경 시 뷰를 업데이트 하는 메서드
+    /// </summary>
+    /// <param name="changedModel">변경 된 모델</param>
     void UpdateView(ModelBase changedModel);
 }
