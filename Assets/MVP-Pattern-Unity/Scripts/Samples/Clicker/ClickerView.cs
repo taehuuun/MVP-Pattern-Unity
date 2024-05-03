@@ -6,25 +6,25 @@ using UnityEngine.UI;
 public class ClickerView : ViewBase
 {
     [Header("Header UI")]
-    [SerializeField] private TMP_Text goldPerClickText;
-    [SerializeField] private TMP_Text goldPerSecText;
-    [SerializeField] private TMP_Text currentGoldText;
+    [SerializeField] private TMP_Text goldPerClickText;                         // 현재 클릭 당 골드 증가량 텍스트
+    [SerializeField] private TMP_Text goldPerSecText;                           // 현재 초 당 골드 증가량 텍스트
+    [SerializeField] private TMP_Text currentGoldText;                          // 현재 보유 골드 텍스트
     
     [Header("Upgrade UI")]
-    [SerializeField] private Button goldPerClickUpgradeBtn;
-    [SerializeField] private Button goldPerSecUpgradeBtn;
-    [SerializeField] private TMP_Text nextGoldPerClickUpgradeBtnLevelText;
-    [SerializeField] private TMP_Text nextGoldPerSecUpgradeBtnLevelText;
-    [SerializeField] private TMP_Text nextGoldPerClickUpgradeBtnCostText;
-    [SerializeField] private TMP_Text nextGoldPerSecUpgradeBtnCostText;
+    [SerializeField] private Button goldPerClickUpgradeBtn;                     // 클릭 당 골드 증가량 업그레이드 버튼
+    [SerializeField] private Button goldPerSecUpgradeBtn;                       // 초 당 골드 증가량 업그레이드 버튼
+    [SerializeField] private TMP_Text nextGoldPerClickUpgradeBtnLevelText;      // 다음 클릭 당 골드 증가량 업그레이드 레벨 텍스트 
+    [SerializeField] private TMP_Text nextGoldPerSecUpgradeBtnLevelText;        // 다음 초 당 골드 증가량 업그레이드 레벨 텍스트
+    [SerializeField] private TMP_Text nextGoldPerClickUpgradeBtnCostText;       // 다음 클릭 당 골드 증가량 업그레이드 비용 텍스트
+    [SerializeField] private TMP_Text nextGoldPerSecUpgradeBtnCostText;         // 다음 초 당 골드 증가량 업그레이드 비용 텍스트
 
     [Header("Touch UI")]
-    [SerializeField] private Button screenBtn;
+    [SerializeField] private Button screenBtn;                                  // 골드 수집 가능한 화면 스크린 버튼
     
     [Header("Circle UI")]
-    [SerializeField] private Transform circle;
+    [SerializeField] private Transform circle;                                  // 화면 중앙의 원 트랜스폼
 
-    private readonly float _scaleUpTime = 0.2f;
+    private readonly float _scaleUpTime = 0.2f;                                 // 원의 사이즈 업이 걸리는 시간
     
     public override void Initialize()
     {
