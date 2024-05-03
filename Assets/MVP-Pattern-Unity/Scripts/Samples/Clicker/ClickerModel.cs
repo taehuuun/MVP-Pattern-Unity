@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 클리커 게임 사용 Model 클래스, ModelBase 추상 클래스를 상속
+/// </summary>
 public class ClickerModel : ModelBase
 {
     public PlayerData Data { get; private set; }
