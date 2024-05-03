@@ -7,6 +7,10 @@ public interface IPresenter
     /// Presenter의 초기화를 진행하는 메서드
     /// </summary>
     void Initialize();
+    
+    /// <summary>
+    /// View에 리스너틑 추가하는 메서드
+    /// </summary>
     void AddViewListeners();
     void ShowView();
     void HideView();
