@@ -27,6 +27,7 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
         view.RemoveAllEvent();
     }
 
+    /// <inheritdoc cref="IPresenter.Initialize"/>
     public virtual void Initialize()
     {
         model.Initialize();
@@ -37,16 +38,19 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
         model.TriggerEvent();
     }
 
+    /// <inheritdoc cref="IPresenter.AddViewListeners"/>
     public virtual void AddViewListeners()
     {
         
     }
 
+    /// <inheritdoc cref="IPresenter.ShowView"/>
     public virtual void ShowView()
     {
         view.gameObject.SetActive(true);
     }
 
+    /// <inheritdoc cref="IPresenter.HideView"/>
     public virtual void HideView()
     {
         view.gameObject.SetActive(false);
