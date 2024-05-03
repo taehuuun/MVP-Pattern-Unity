@@ -8,7 +8,7 @@ public interface IModel
     /// <summary>
     /// 모델 내 이벤트에 리스너를 추가하는 메서드
     /// </summary>
-    /// <param name="listener">ModelBase 상속 클래스를 매개 받는 UnityAction 리스너</param>
+    /// <param name="listener">추가 할 리스너(ModelBase)</param>
     void AddListener(UnityAction<ModelBase> listener);
     
     /// <summary>
