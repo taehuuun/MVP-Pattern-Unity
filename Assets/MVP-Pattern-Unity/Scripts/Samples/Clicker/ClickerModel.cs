@@ -105,6 +105,9 @@ public class ClickerModel : ModelBase
         TriggerEvent();
     }
 
+    /// <summary>
+    /// 게임 종료 시 진행 내용을 PlayerPrefs에 저장하는 메서드
+    /// </summary>
     private void OnApplicationQuit()
     {
         PlayerPrefs.SetInt(_GOLD_KEY, Data.gold);
