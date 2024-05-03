@@ -149,7 +149,6 @@ public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TM
     /// <summary>
     /// 모델이 변경될 때 호출 되는 메서드
     /// </summary>
-    /// <param name="changedModel">변경 된 모델</param>
     protected virtual void HandleModelUpdate()
     {
         view.UpdateView(model);
