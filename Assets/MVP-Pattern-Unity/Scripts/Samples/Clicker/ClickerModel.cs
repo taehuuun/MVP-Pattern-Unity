@@ -65,6 +65,9 @@ public class ClickerModel : ModelBase
         TriggerEvent();
     }
 
+    /// <summary>
+    /// 클릭 당 골드 증가량 업그레이드 메서드
+    /// </summary>
     public void UpgradeGoldPerClick()
     {
         int cost = _goldPerClickUpgrade.costs[NextGoldPerClickLevel];
