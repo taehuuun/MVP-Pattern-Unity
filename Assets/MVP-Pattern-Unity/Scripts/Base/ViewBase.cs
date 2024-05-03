@@ -96,6 +96,9 @@ public abstract class ViewBase : MonoBehaviour, IView
         _events.Remove(eventName);
     }
 
+    /// <summary>
+    /// _events 딕셔너리의 모든 이벤트 및 리스너를 제거하는 메서드
+    /// </summary>
     public virtual void RemoveAllEvent()
     {
         foreach (var events in _events.Values)
