@@ -10,6 +10,9 @@ public abstract class ViewBase : MonoBehaviour, IView
     // View의 상호작용 이벤트를 관리하는 딕셔너리 필드
     private readonly Dictionary<string, UnityEventBase> _events = new();
 
+    /// <summary>
+    /// View의 초기화를 진행하는 메서드
+    /// </summary>
     public abstract void Initialize();
     
     public abstract void UpdateView(ModelBase changedModel);
