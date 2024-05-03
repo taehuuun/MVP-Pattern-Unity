@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ClickerPresenter : PresenterBase
 {
-    private readonly WaitForSeconds _goldPerSecDelay = new(1f);
+    private readonly WaitForSeconds _goldPerSecDelay = new(1f);     // 1초 딜레이
     
     public override void Initialize()
     {
