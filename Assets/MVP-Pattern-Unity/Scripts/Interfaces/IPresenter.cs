@@ -4,16 +4,6 @@
 public interface IPresenter
 {
     /// <summary>
-    /// Presenter의 초기화를 진행하는 메서드
-    /// </summary>
-    void Initialize();
-    
-    /// <summary>
-    /// View에 리스너틑 추가하는 메서드
-    /// </summary>
-    void AddViewListeners();
-    
-    /// <summary>
     /// View를 활성화 시키는 메서드
     /// </summary>
     void ShowView();

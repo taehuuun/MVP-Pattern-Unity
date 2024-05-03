@@ -27,8 +27,10 @@ public class ClickerView : ViewBase
     private readonly float _scaleUpTime = 0.2f;                                 // 원의 사이즈 업이 걸리는 시간
     
     /// <inheritdoc cref="ViewBase.Initialize"/>
-    public override void Initialize()
+    public override void Initialize(PresenterBase presenter)
     {
+        base.Initialize(presenter);
+        
         screenBtn.onClick.AddListener(TriggerTouchScreen);
         goldPerClickUpgradeBtn.onClick.AddListener(TriggerGoldPerClickUpgrade);
         goldPerSecUpgradeBtn.onClick.AddListener(TriggerGoldPerSecUpgrade);

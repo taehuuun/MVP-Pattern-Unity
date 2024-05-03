@@ -6,20 +6,15 @@ public class ClickerPresenter : PresenterBase
     private readonly WaitForSeconds _goldPerSecDelay = new(1f);     // 1초 딜레이
     
     /// <inheritdoc cref="PresenterBase.Initialize"/>
-    public override void Initialize()
+    protected override void Initialize()
     {
         base.Initialize();
 
+        AddListener("TouchScreen", HandleTouchScreen);
+        AddListener("UpgradeGoldPerClick", HandleUpgradePerClick);
+        AddListener("UpgradeGoldPerSec", HandleUpgradePerSec);
+        
         StartCoroutine(GetGoldPerSec());
-    }
-    
-    /// <inheritdoc cref="PresenterBase.AddViewListeners"/>
-    public override void AddViewListeners()
-    {
-        base.AddViewListeners();
-        view.AddListener("TouchScreen", HandleTouchScreen);
-        view.AddListener("UpgradeGoldPerClick", HandleUpgradePerClick);
-        view.AddListener("UpgradeGoldPerSec", HandleUpgradePerSec);
     }
     
     /// <summary>
