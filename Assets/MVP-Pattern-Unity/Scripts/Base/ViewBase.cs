@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// IView 인터페이스를 상속 받는 모든 View의 부모 추상 클래스
+/// </summary>
 public abstract class ViewBase : MonoBehaviour, IView
 {
     private readonly Dictionary<string, UnityEventBase> _events = new();
