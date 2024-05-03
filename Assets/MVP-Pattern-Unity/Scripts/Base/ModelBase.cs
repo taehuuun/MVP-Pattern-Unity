@@ -16,25 +16,25 @@ public abstract class ModelBase : MonoBehaviour, IModel
         
     }
     
-    /// <inheritdoc cref="IModel"/>
+    /// <inheritdoc cref="IModel.AddListener"/>
     public void AddListener(UnityAction<ModelBase> listener)
     {
         _onModelChanged.AddListener(listener);
     }
 
-    /// <inheritdoc cref="IModel"/>
+    /// <inheritdoc cref="IModel.RemoveListener"/>
     public void RemoveListener(UnityAction<ModelBase> listener)
     {
         _onModelChanged.RemoveListener(listener);
     }
 
-    /// <inheritdoc cref="IModel"/>
+    /// <inheritdoc cref="IModel.ClearListener"/>
     public void ClearListener()
     {
         _onModelChanged.RemoveAllListeners();
     }
 
-    /// <inheritdoc cref="IModel"/>
+    /// <inheritdoc cref="IModel.TriggerEvent"/>
     public void TriggerEvent()
     {
         _onModelChanged?.Invoke(this);
