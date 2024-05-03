@@ -82,6 +82,10 @@ public abstract class ViewBase : MonoBehaviour, IView
         }
     }
 
+    /// <summary>
+    /// eventName에 해당하는 이벤트를 제거하는 메서드
+    /// </summary>
+    /// <param name="eventName">제거 할 이벤트 명</param>
     public virtual void RemoveEvent(string eventName)
     {
         if (_events.TryGetValue(eventName, out var unityEventBase))
