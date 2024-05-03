@@ -47,6 +47,9 @@ public class ClickerModel : ModelBase
         CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.goldPerSecLevel];
     }
 
+    /// <summary>
+    /// 클릭 당 골드 증가량 만큼 골드를 증가 시키는 메서드 
+    /// </summary>
     public void ClickAddGold()
     {
         Data.gold += CurrentGoldPerClick;
