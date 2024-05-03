@@ -17,5 +17,9 @@ public interface IPresenter
     /// View를 활성화 시키는 메서드
     /// </summary>
     void ShowView();
+    
+    /// <summary>
+    /// View를 비활성화 시키는 메서드
+    /// </summary>
     void HideView();
 }
