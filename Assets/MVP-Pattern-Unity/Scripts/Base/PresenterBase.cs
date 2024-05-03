@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// IPresenter 인터페이스를 상속 받는 모든 Presenter의 부모 추상 클래스
+/// </summary>
 public abstract class PresenterBase : MonoBehaviour, IPresenter 
 {
     [SerializeField] protected ModelBase model;
