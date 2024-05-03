@@ -13,6 +13,7 @@ public class ClickerPresenter : PresenterBase
         StartCoroutine(GetGoldPerSec());
     }
     
+    /// <inheritdoc cref="PresenterBase.AddViewListeners"/>
     public override void AddViewListeners()
     {
         base.AddViewListeners();
