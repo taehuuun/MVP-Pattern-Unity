@@ -15,6 +15,7 @@ public abstract class ViewBase : MonoBehaviour, IView
     /// </summary>
     public abstract void Initialize();
     
+    /// <inheritdoc cref="IView.UpdateView"/>
     public abstract void UpdateView(ModelBase changedModel);
 
     public virtual void AddListener(string eventName, UnityAction listener)
