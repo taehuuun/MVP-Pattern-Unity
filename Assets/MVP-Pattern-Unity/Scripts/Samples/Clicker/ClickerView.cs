@@ -73,6 +73,10 @@ public class ClickerView : ViewBase
         TriggerEvent("UpgradeGoldPerSec");
     }
 
+    /// <summary>
+    /// 골드 증가에 따라 화면 중앙 원 사이즈를 키우는 코루틴 메서드
+    /// </summary>
+    /// <param name="gold">증가된 골드</param>
     private IEnumerator SizeUp(int gold)
     {
         float targetScaleValue = circle.localScale.x + gold * 0.001f;
