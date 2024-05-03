@@ -22,6 +22,9 @@ public class ClickerPresenter : PresenterBase
         view.AddListener("UpgradeGoldPerSec", HandleUpgradePerSec);
     }
     
+    /// <summary>
+    /// 클릭 시 골드 증가 이벤트 핸틀링 메서드
+    /// </summary>
     private void HandleTouchScreen()
     {
         ((ClickerModel)model).ClickAddGold();
