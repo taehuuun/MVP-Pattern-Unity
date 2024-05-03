@@ -57,6 +57,9 @@ public class ClickerView : ViewBase
         TriggerEvent("TouchScreen");
     }
 
+    /// <summary>
+    /// 클릭 당 골드 증가량 업그레이드 이벤트를 트리거 하는 메서드
+    /// </summary>
     private void TriggerGoldPerClickUpgrade()
     {
         TriggerEvent("UpgradeGoldPerClick");
