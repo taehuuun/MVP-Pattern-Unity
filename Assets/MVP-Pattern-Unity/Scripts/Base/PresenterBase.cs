@@ -30,7 +30,9 @@ public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TM
         RemoveAllEvent();
     }
 
-    /// <inheritdoc cref="IPresenter.Initialize"/>
+    /// <summary>
+    /// Presenter의 초기화를 진행하는 메서드
+    /// </summary>
     protected virtual void Initialize()
     {
         model.Initialize();

@@ -5,7 +5,7 @@ public class ClickerPresenter : PresenterBase<ClickerModel>
 {
     private readonly WaitForSeconds _goldPerSecDelay = new(1f);     // 1초 딜레이
     
-    /// <inheritdoc cref="PresenterBase.Initialize"/>
+    /// <inheritdoc cref="PresenterBase{TModel}.Initialize"/>
     protected override void Initialize()
     {
         base.Initialize();
