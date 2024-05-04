@@ -85,7 +85,7 @@ public class ClickerView : ViewBase<ClickerModel>
     private IEnumerator SizeUp(int gold)
     {
         _isSizeUpStart = true;
-        float targetScaleValue = circle.localScale.x + gold * 0.001f;
+        float targetScaleValue = Mathf.Clamp(gold * 0.00001f,0.1f, 6.5f);
         Vector2 targetScale = new Vector2(targetScaleValue, targetScaleValue);
         Vector2 originScale = circle.localScale;
 
