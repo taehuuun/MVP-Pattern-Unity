@@ -24,7 +24,7 @@ public class ClickerView : ViewBase<ClickerModel>
     [Header("Circle UI")]
     [SerializeField] private Transform circle;                                  // 화면 중앙의 원 트랜스폼
 
-    private readonly float _scaleUpTime = 0.2f;                                 // 원의 사이즈 업이 걸리는 시간
+    private readonly float _scaleUpTime = 0.1f;                                 // 원의 사이즈 업이 걸리는 시간
     private bool _isSizeUpStart;
     
     /// <inheritdoc cref="ViewBase{TModel}.Initialize"/>
