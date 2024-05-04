@@ -98,7 +98,7 @@ public class ClickerView : ViewBase<ClickerModel>
             yield return null;
         }
 
-        transform.localScale = targetScale;
+        circle.localScale = targetScale;
         _isSizeUpStart = false;
     }
 }
