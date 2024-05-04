@@ -4,7 +4,7 @@ using UnityEngine.Events;
 /// <summary>
 /// IView 인터페이스를 상속 받는 모든 View의 부모 추상 클래스
 /// </summary>
-public abstract class ViewBase<TModel> : MonoBehaviour, IView<TModel> where TModel : ModelBase
+public abstract class ViewBase<TModel> : MonoBehaviour where TModel : ModelBase
 {
     private PresenterBase<TModel> _presenter;
 
