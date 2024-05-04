@@ -25,6 +25,7 @@ public class ClickerView : ViewBase<ClickerModel>
     [SerializeField] private Transform circle;                                  // 화면 중앙의 원 트랜스폼
 
     private readonly float _scaleUpTime = 0.2f;                                 // 원의 사이즈 업이 걸리는 시간
+    private bool _isSizeUpStart;
     
     /// <inheritdoc cref="ViewBase{TModel}.Initialize"/>
     public override void Initialize(PresenterBase<ClickerModel> presenter)
@@ -47,7 +48,10 @@ public class ClickerView : ViewBase<ClickerModel>
         nextGoldPerClickUpgradeBtnCostText.text = $"Cost: {changedModel.NextGoldPerClickCost} G";
         nextGoldPerSecUpgradeBtnCostText.text = $"Cost: {changedModel.NextGoldPerSecCost} G";
 
-        StartCoroutine(SizeUp(changedModel.Data.gold));
+        if (!_isSizeUpStart)
+        {
+            StartCoroutine(SizeUp(changedModel.Data.gold));
+        }
     }
 
     /// <summary>
@@ -80,6 +84,7 @@ public class ClickerView : ViewBase<ClickerModel>
     /// <param name="gold">증가된 골드</param>
     private IEnumerator SizeUp(int gold)
     {
+        _isSizeUpStart = true;
         float targetScaleValue = circle.localScale.x + gold * 0.001f;
         Vector2 targetScale = new Vector2(targetScaleValue, targetScaleValue);
         Vector2 originScale = circle.localScale;
@@ -94,5 +99,6 @@ public class ClickerView : ViewBase<ClickerModel>
         }
 
         transform.localScale = targetScale;
+        _isSizeUpStart = false;
     }
 }
