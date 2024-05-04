@@ -5,7 +5,7 @@ using UnityEngine.Events;
 /// <summary>
 /// IPresenter 인터페이스를 상속 받는 모든 Presenter의 부모 추상 클래스
 /// </summary>
-public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TModel : ModelBase 
+public abstract class PresenterBase<TModel> : MonoBehaviour where TModel : ModelBase 
 {
     // View의 상호작용 이벤트를 관리하는 딕셔너리 필드
     public Dictionary<string, UnityEventBase> Events { get; }= new();
@@ -134,13 +134,17 @@ public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TM
         Events.Clear();
     }
 
-    /// <inheritdoc cref="IPresenter.ShowView"/>
+    /// <summary>
+    /// View를 활성화 시키는 메서드
+    /// </summary>
     public virtual void ShowView()
     {
         view.gameObject.SetActive(true);
     }
 
-    /// <inheritdoc cref="IPresenter.HideView"/>
+    /// <summary>
+    /// View를 비활성화 시키는 메서드
+    /// </summary>
     public virtual void HideView()
     {
         view.gameObject.SetActive(false);
