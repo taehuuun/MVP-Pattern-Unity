@@ -13,10 +13,10 @@ public class ClickerView : ViewBase<ClickerModel>
     [Header("Upgrade UI")]
     [SerializeField] private Button goldPerClickUpgradeBtn;                     // 클릭 당 골드 증가량 업그레이드 버튼
     [SerializeField] private Button goldPerSecUpgradeBtn;                       // 초 당 골드 증가량 업그레이드 버튼
-    [SerializeField] private TMP_Text nextGoldPerClickUpgradeBtnLevelText;      // 다음 클릭 당 골드 증가량 업그레이드 레벨 텍스트 
-    [SerializeField] private TMP_Text nextGoldPerSecUpgradeBtnLevelText;        // 다음 초 당 골드 증가량 업그레이드 레벨 텍스트
-    [SerializeField] private TMP_Text nextGoldPerClickUpgradeBtnCostText;       // 다음 클릭 당 골드 증가량 업그레이드 비용 텍스트
-    [SerializeField] private TMP_Text nextGoldPerSecUpgradeBtnCostText;         // 다음 초 당 골드 증가량 업그레이드 비용 텍스트
+    [SerializeField] private TMP_Text goldPerClickNextLevelText;                // 다음 클릭 당 골드 증가량 업그레이드 레벨 텍스트 
+    [SerializeField] private TMP_Text goldPerSecNextLevelText;                  // 다음 초 당 골드 증가량 업그레이드 레벨 텍스트
+    [SerializeField] private TMP_Text goldPerClickNextCostText;                 // 다음 클릭 당 골드 증가량 업그레이드 비용 텍스트
+    [SerializeField] private TMP_Text goldPerSecNextCostText;                   // 다음 초 당 골드 증가량 업그레이드 비용 텍스트
 
     [Header("Touch UI")]
     [SerializeField] private Button screenBtn;                                  // 골드 수집 가능한 화면 스크린 버튼
@@ -43,10 +43,10 @@ public class ClickerView : ViewBase<ClickerModel>
         goldPerClickText.text = $"+{changedModel.CurrentGoldPerClick} / Click";
         goldPerSecText.text = $"+{changedModel.CurrentGoldPerSec} / Sec";
         currentGoldText.text = $"{changedModel.Data.gold} G";
-        nextGoldPerClickUpgradeBtnLevelText.text = $"Next Lv: {changedModel.NextGoldPerClickLevel}";
-        nextGoldPerSecUpgradeBtnLevelText.text = $"Next Lv: {changedModel.NextGoldPerSecLevel}";
-        nextGoldPerClickUpgradeBtnCostText.text = $"Cost: {changedModel.NextGoldPerClickCost} G";
-        nextGoldPerSecUpgradeBtnCostText.text = $"Cost: {changedModel.NextGoldPerSecCost} G";
+        goldPerClickNextLevelText.text = $"Next Lv: {changedModel.NextGoldPerClickLevel}";
+        goldPerSecNextLevelText.text = $"Next Lv: {changedModel.NextGoldPerSecLevel}";
+        goldPerClickNextCostText.text = $"Cost: {changedModel.NextGoldPerClickCost} G";
+        goldPerSecNextCostText.text = $"Cost: {changedModel.NextGoldPerSecCost} G";
 
         if (!_isSizeUpStart)
         {

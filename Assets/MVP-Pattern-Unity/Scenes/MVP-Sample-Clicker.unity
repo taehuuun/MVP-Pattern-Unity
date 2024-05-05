@@ -2365,10 +2365,10 @@ MonoBehaviour:
   currentGoldText: {fileID: 683914779}
   goldPerClickUpgradeBtn: {fileID: 1610559448}
   goldPerSecUpgradeBtn: {fileID: 257975950}
-  nextGoldPerClickUpgradeBtnLevelText: {fileID: 640253782}
-  nextGoldPerSecUpgradeBtnLevelText: {fileID: 625938653}
-  nextGoldPerClickUpgradeBtnCostText: {fileID: 305807423}
-  nextGoldPerSecUpgradeBtnCostText: {fileID: 2051498353}
+  goldPerClickNextLevelText: {fileID: 640253782}
+  goldPerSecNextLevelText: {fileID: 625938653}
+  goldPerClickNextCostText: {fileID: 305807423}
+  goldPerSecNextCostText: {fileID: 2051498353}
   screenBtn: {fileID: 1830810586}
   circle: {fileID: 1508025805}
 --- !u!114 &1702228103
