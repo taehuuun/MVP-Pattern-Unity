@@ -32,9 +32,9 @@ public class ClickerView : ViewBase<ClickerModel>
     {
         base.Initialize(presenter);
         
-        screenBtn.onClick.AddListener(TriggerTouchScreen);
-        goldPerClickUpgradeBtn.onClick.AddListener(TriggerGoldPerClickUpgrade);
-        goldPerSecUpgradeBtn.onClick.AddListener(TriggerGoldPerSecUpgrade);
+        screenBtn.onClick.AddListener(() => TriggerEvent("TouchScreen"));
+        goldPerClickUpgradeBtn.onClick.AddListener(() => TriggerEvent("UpgradeGoldPerClick"));
+        goldPerSecUpgradeBtn.onClick.AddListener(() => TriggerEvent("UpgradeGoldPerSec"));
     }
 
     /// <inheritdoc cref="ViewBase{TModel}.UpdateView"/>
@@ -52,30 +52,6 @@ public class ClickerView : ViewBase<ClickerModel>
         {
             StartCoroutine(SizeUp(changedModel.Data.gold));
         }
-    }
-
-    /// <summary>
-    /// 클릭 시 골드 증가 이벤트를 트리거 하는 메서드
-    /// </summary>
-    private void TriggerTouchScreen()
-    {
-        TriggerEvent("TouchScreen");
-    }
-
-    /// <summary>
-    /// 클릭 당 골드 증가량 업그레이드 이벤트를 트리거 하는 메서드
-    /// </summary>
-    private void TriggerGoldPerClickUpgrade()
-    {
-        TriggerEvent("UpgradeGoldPerClick");
-    }
-
-    /// <summary>
-    /// 초 당 골드 증가량 업그레이드 이벤트를 트리거 하는 메서드
-    /// </summary>
-    private void TriggerGoldPerSecUpgrade()
-    {
-        TriggerEvent("UpgradeGoldPerSec");
     }
 
     /// <summary>
