@@ -43,11 +43,11 @@ public abstract class ViewBase<TModel> : MonoBehaviour where TModel : ModelBase
     /// <param name="eventName">발생 시킬 이벤트 명</param>
     /// <param name="args">이벤트 발생 시 인자</param>
     /// <typeparam name="T">모든 타입</typeparam>
-    public virtual void TriggerEvent<T>(string eventName, T args)
+    public virtual void TriggerEvent(string eventName, object[] args)
     {
         if (_presenter.Events.TryGetValue(eventName, out var unityEventBase))
         {
-            if (unityEventBase is UnityEvent<T> unityEvent)
+            if (unityEventBase is UnityEvent<object[]> unityEvent)
             {
                 unityEvent.Invoke(args);
             }

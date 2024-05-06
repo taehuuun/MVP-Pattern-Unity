@@ -64,14 +64,14 @@ public abstract class PresenterBase<TModel> : MonoBehaviour where TModel : Model
     /// <param name="eventName">이벤트 명</param>
     /// <param name="listener">추가 할 리스너</param>
     /// <typeparam name="T">리스너 인자</typeparam>
-    protected virtual void AddListener<T>(string eventName, UnityAction<T> listener)
+    protected virtual void AddListener(string eventName, UnityAction<object[]> listener)
     {
         if (!Events.ContainsKey(eventName))
         {
-            Events.Add(eventName, new UnityEvent<T>());
+            Events.Add(eventName, new UnityEvent<object[]>());
         }
 
-        ((UnityEvent<T>)Events[eventName]).AddListener(listener);
+        ((UnityEvent<object[]>)Events[eventName]).AddListener(listener);
     }
 
     /// <summary>
@@ -96,11 +96,11 @@ public abstract class PresenterBase<TModel> : MonoBehaviour where TModel : Model
     /// <param name="eventName">이벤트 명</param>
     /// <param name="listener">제거 할 리스너</param>
     /// <typeparam name="T">제거 할 리스너의 인자</typeparam>
-    protected virtual void RemoveListener<T>(string eventName, UnityAction<T> listener)
+    protected virtual void RemoveListener(string eventName, UnityAction<object[]> listener)
     {
         if (Events.TryGetValue(eventName, out var unityEventBase))
         {
-            if (unityEventBase is UnityEvent<T> unityEvent)
+            if (unityEventBase is UnityEvent<object[]> unityEvent)
             {
                 unityEvent.RemoveListener(listener);
             }
