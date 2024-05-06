@@ -10,35 +10,11 @@ public class ClickerPresenter : PresenterBase<ClickerModel>
     {
         base.Initialize();
 
-        AddListener("TouchScreen", HandleTouchScreen);
-        AddListener("UpgradeGoldPerClick", HandleUpgradePerClick);
-        AddListener("UpgradeGoldPerSec", HandleUpgradePerSec);
+        AddListener("TouchScreen", model.ClickAddGold);
+        AddListener("UpgradeGoldPerClick", model.UpgradeGoldPerClick);
+        AddListener("UpgradeGoldPerSec", model.UpgradeGoldPerSec);
         
         StartCoroutine(GetGoldPerSec());
-    }
-    
-    /// <summary>
-    /// 클릭 시 골드 증가 이벤트 핸틀링 메서드
-    /// </summary>
-    private void HandleTouchScreen()
-    {
-        model.ClickAddGold();
-    }
-    
-    /// <summary>
-    /// 클릭 당 골드 증가량 업그레이드 이벤트 핸들링 메서드
-    /// </summary>
-    private void HandleUpgradePerClick()
-    {
-        model.UpgradeGoldPerClick();
-    }
-    
-    /// <summary>
-    /// 초 당 골드 증가량 업그레이드 이벤트 핸들링 메서드
-    /// </summary>
-    private void HandleUpgradePerSec()
-    {
-        model.UpgradeGoldPerSec();
     }
     
     /// <summary>
