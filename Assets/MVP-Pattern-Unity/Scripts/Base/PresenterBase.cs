@@ -59,11 +59,10 @@ public abstract class PresenterBase<TModel> : MonoBehaviour where TModel : Model
     }
 
     /// <summary>
-    /// eventName에 해당하는 이벤트에 인자를 1개 가지는 리스너를 추가 시키는 메서드
+    /// eventName에 해당하는 이벤트에 인자를 1개 이상 가지는 리스너를 추가 시키는 메서드
     /// </summary>
     /// <param name="eventName">이벤트 명</param>
     /// <param name="listener">추가 할 리스너</param>
-    /// <typeparam name="T">리스너 인자</typeparam>
     protected virtual void AddListener(string eventName, UnityAction<object[]> listener)
     {
         if (!Events.ContainsKey(eventName))
