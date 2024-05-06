@@ -90,11 +90,10 @@ public abstract class PresenterBase<TModel> : MonoBehaviour where TModel : Model
     }
 
     /// <summary>
-    /// eventName에 해당하는 이벤트의 인자 1개를 가지는 리스너를 제거하는 메서드
+    /// eventName에 해당하는 이벤트의 인자를 1개 이상 가지는 리스너를 제거하는 메서드
     /// </summary>
     /// <param name="eventName">이벤트 명</param>
     /// <param name="listener">제거 할 리스너</param>
-    /// <typeparam name="T">제거 할 리스너의 인자</typeparam>
     protected virtual void RemoveListener(string eventName, UnityAction<object[]> listener)
     {
         if (Events.TryGetValue(eventName, out var unityEventBase))
