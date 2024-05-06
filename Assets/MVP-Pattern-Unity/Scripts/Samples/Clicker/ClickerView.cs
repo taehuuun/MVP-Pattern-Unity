@@ -32,9 +32,9 @@ public class ClickerView : ViewBase<ClickerModel>
     {
         base.Initialize(presenter);
         
-        screenBtn.onClick.AddListener(() => TriggerEvent("TouchScreen"));
-        goldPerClickUpgradeBtn.onClick.AddListener(() => TriggerEvent("UpgradeGoldPerClick"));
-        goldPerSecUpgradeBtn.onClick.AddListener(() => TriggerEvent("UpgradeGoldPerSec"));
+        screenBtn.onClick.AddListener(() => presenter.TriggerEvent("TouchScreen"));
+        goldPerClickUpgradeBtn.onClick.AddListener(() => presenter.TriggerEvent("UpgradeGoldPerClick"));
+        goldPerSecUpgradeBtn.onClick.AddListener(() => presenter.TriggerEvent("UpgradeGoldPerSec"));
     }
 
     /// <inheritdoc cref="ViewBase{TModel}.UpdateView"/>

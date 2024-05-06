@@ -106,6 +106,37 @@ public abstract class PresenterBase<TModel> : MonoBehaviour where TModel : Model
     }
 
     /// <summary>
+    /// eventName에 해당하는 이벤트를 발생 시키는 메서드
+    /// </summary>
+    /// <param name="eventName">발생 시킬 이벤트 명</param>
+    public virtual void TriggerEvent(string eventName)
+    {
+        if (Events.TryGetValue(eventName, out var unityEventBase))
+        {
+            if (unityEventBase is UnityEvent unityEvent)
+            {
+                unityEvent.Invoke();
+            }
+        }
+    }
+    
+    /// <summary>
+    /// eventName에 해당하는 인자를 1개 이상 가지는 이벤트를 트리거 시키는 메서드
+    /// </summary>
+    /// <param name="eventName">발생 시킬 이벤트 명</param>
+    /// <param name="args">이벤트 발생 시 전달되는 인자 배열</param>
+    public virtual void TriggerEvent(string eventName, object[] args)
+    {
+        if (Events.TryGetValue(eventName, out var unityEventBase))
+        {
+            if (unityEventBase is UnityEvent<object[]> unityEvent)
+            {
+                unityEvent.Invoke(args);
+            }
+        }
+    }
+    
+    /// <summary>
     /// eventName에 해당하는 이벤트를 제거하는 메서드
     /// </summary>
     /// <param name="eventName">제거 할 이벤트 명</param>
