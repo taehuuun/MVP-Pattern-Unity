@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -5,104 +6,104 @@ using UnityEngine;
 /// </summary>
 public class ClickerModel : ModelBase
 {
-    public PlayerData Data { get; private set; }                                                // 플레이어 데이터 (보유 골드, 각 업그레이드 레벨)
-    public int CurrentGoldPerClick { get; private set; }                                        // 현재 클릭 당 획득 골드 량
-    public int CurrentGoldPerSec { get; private set; }                                          // 현재 초 당 획득 골드 량
-    public int NextGoldPerClickCost => _goldPerClickUpgrade.costs[Data.goldPerClickLevel+1];    // 다음 레벨의 클릭 당 골드 업그레이드 비용
-    public int NextGoldPerSecCost => _goldPerSecUpgrade.costs[Data.goldPerSecLevel+1];          // 다음 레벨의 초 당 골드 업그레이드 비용
-    public int NextGoldPerClickLevel => Data.goldPerClickLevel + 1;                             // 클릭 당 골드 업그레이드의 다음 레벨
-    public int NextGoldPerSecLevel => Data.goldPerSecLevel + 1;                                 // 초 당 골드 업그레이드의 다음 레벨
+    public enum Method
+    {
+        ClickAddGold,
+        SecAddGold,
+        UpgradeGoldPerClick,
+        UpgradeGoldPerSec,
+    }
     
-    private Upgrade _goldPerClickUpgrade;                                                       // 클릭 당 골드 업그레이드 정보
-    private Upgrade _goldPerSecUpgrade;                                                         // 초 당 골드 업그레이드 정보
+    [SerializeField] private Transform circle;                                  // 화면 중앙의 원 트랜스폼
+
+    public PlayerData Data { get; private set; }
+    public Upgrade GoldPerClickUpgrade { get; private set; }                                                       // 클릭 당 골드 업그레이드 정보
+    public Upgrade GoldPerSecUpgrade { get; private set; }                                                         // 초 당 골드 업그레이드 정보
+
+    public int CurrentGoldPerClick => GoldPerClickUpgrade.values[Data.GoldPerClickLevel];
+    public int CurrentGoldPerSec => GoldPerSecUpgrade.values[Data.GoldPerSecLevel];
+    public int NextGoldPerClickCost => GoldPerClickUpgrade.costs[Data.GoldPerClickLevel+1];    // 다음 레벨의 클릭 당 골드 업그레이드 비용
+    public int NextGoldPerSecCost => GoldPerSecUpgrade.costs[Data.GoldPerSecLevel+1];          // 다음 레벨의 초 당 골드 업그레이드 비용
 
     private const string _GOLD_PER_CLICK_LEVEL_KEY = "ClickerGoldPerClickLevel";                // 클릭 당 골드 업그레이드 레벨 저장을 위한 PlayerPrefs 키 값
     private const string _GOLD_PER_SEC_LEVEL_KEY = "ClickerGoldPerSecLevel";                    // 초 당 골드 업그레이드 레벨 저장을 위한 PlayerPrefs 키 값
     private const string _GOLD_KEY = "ClickerGold";                                             // 현재 보유 골드 저장을 위한 PlayerPrefs 키 값
 
+    private int _currentGoldPerClick;
+    private int _currentGoldPerSec;
+    private readonly float _scaleUpTime = 0.1f;                                                 // 원의 사이즈 업이 걸리는 시간
+    private readonly WaitForSeconds _goldPerSecDelay = new(1f);                                 // 1초 딜레이
+
     /// <inheritdoc cref="ModelBase.Initialize"/>
     public override void Initialize()
     {
-        // ModelBase 클래스의 Initialize 메서드 진행
         base.Initialize();
-
-        // 각 업그레이드 정보가 담긴 SO 파일을 리소스 폴더 내에서 로드
-        Upgrade goldPerClick = Resources.Load<Upgrade>("Clicker/SO/GoldPerClick");
-        Upgrade goldPerSec = Resources.Load<Upgrade>("Clicker/SO/GoldPerSec");
-
-        // 로드 된 업그레이드 정보를 각 필드에 대입
-        _goldPerClickUpgrade = goldPerClick;
-        _goldPerSecUpgrade = goldPerSec;
+        GoldPerClickUpgrade = Resources.Load<Upgrade>("Clicker/SO/GoldPerClick");
+        GoldPerSecUpgrade = Resources.Load<Upgrade>("Clicker/SO/GoldPerSec");
 
         // PlayerPrefs에 저장된 플레이어 정보를 로드 없을 경우, 기본 값인 0으로 세팅
         Data = new ()
         {
-            gold = PlayerPrefs.GetInt(_GOLD_KEY,0),
-            goldPerClickLevel = PlayerPrefs.GetInt(_GOLD_PER_CLICK_LEVEL_KEY, 0),
-            goldPerSecLevel = PlayerPrefs.GetInt(_GOLD_PER_SEC_LEVEL_KEY,0)
+            Gold = PlayerPrefs.GetInt(_GOLD_KEY,0),
+            GoldPerClickLevel = PlayerPrefs.GetInt(_GOLD_PER_CLICK_LEVEL_KEY, 0),
+            GoldPerSecLevel = PlayerPrefs.GetInt(_GOLD_PER_SEC_LEVEL_KEY,0)
         };
-        
-        // 현재 클릭, 초 당 골드 증가량을 세팅
-        CurrentGoldPerClick = _goldPerClickUpgrade.values[Data.goldPerClickLevel];
-        CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.goldPerSecLevel];
-    }
 
+        Data.PropertyChanged += OnNestedPropertyChanged;
+        
+        AddMethod(Method.ClickAddGold, ClickAddGold);
+        AddMethod(Method.SecAddGold, SecAddGold);
+        AddMethod(Method.UpgradeGoldPerClick, UpgradeGoldPerClick);
+        AddMethod(Method.UpgradeGoldPerSec, UpgradeGoldPerSec);
+        
+        StartCoroutine(GetGoldPerSec());
+    }
+    
     /// <summary>
     /// 클릭 당 골드 증가량 만큼 골드를 증가 시키는 메서드 
     /// </summary>
-    public void ClickAddGold()
+    private void ClickAddGold()
     {
-        Data.gold += CurrentGoldPerClick;
-        TriggerEvent();
+        Data.Gold += CurrentGoldPerClick;
+        StartCoroutine(SizeUp(Data.Gold));
     }
 
     /// <summary>
     /// 초 당 골드 증가량 만큼 골드를 증가 시키는 메서드 
     /// </summary>
-    public void SecAddGold()
+    private void SecAddGold()
     {
-        Data.gold += CurrentGoldPerSec;
-        TriggerEvent();
+        Data.Gold += CurrentGoldPerSec;
     }
 
     /// <summary>
     /// 클릭 당 골드 증가량 업그레이드 메서드
     /// </summary>
-    public void UpgradeGoldPerClick()
+    private void UpgradeGoldPerClick()
     {
-        int cost = _goldPerClickUpgrade.costs[NextGoldPerClickLevel];
-        
-        if (cost > Data.gold)
+        if (NextGoldPerClickCost > Data.Gold)
         {
-            Debug.Log(cost);
-            Debug.Log(NextGoldPerClickLevel);
             Debug.Log("클릭 당 골드 증가 업그레이드 비용 부족");
             return;
         }
 
-        Data.gold -= cost;
-        Data.goldPerClickLevel++;
-        CurrentGoldPerClick = _goldPerClickUpgrade.values[Data.goldPerClickLevel];
-        TriggerEvent();
+        Data.Gold -= NextGoldPerClickCost;
+        Data.GoldPerClickLevel++;
     }
     
     /// <summary>
     /// 초 당 골드 증가량 업그레이드 메서드
     /// </summary>
-    public void UpgradeGoldPerSec()
+    private void UpgradeGoldPerSec()
     {
-        int cost = _goldPerClickUpgrade.costs[NextGoldPerSecLevel];
-        
-        if (cost > Data.gold)
+        if (NextGoldPerSecCost > Data.Gold)
         {
             Debug.Log("초 당 골드 증가 업그레이드 비용 부족");
             return;
         }
 
-        Data.gold -= cost;
-        Data.goldPerSecLevel++;
-        CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.goldPerSecLevel];
-        TriggerEvent();
+        Data.Gold -= NextGoldPerSecCost;
+        Data.GoldPerSecLevel++;
     }
 
     /// <summary>
@@ -110,8 +111,40 @@ public class ClickerModel : ModelBase
     /// </summary>
     private void OnApplicationQuit()
     {
-        PlayerPrefs.SetInt(_GOLD_KEY, Data.gold);
-        PlayerPrefs.SetInt(_GOLD_PER_SEC_LEVEL_KEY, Data.goldPerSecLevel);
-        PlayerPrefs.SetInt(_GOLD_PER_CLICK_LEVEL_KEY, Data.goldPerClickLevel);
+        PlayerPrefs.SetInt(_GOLD_KEY, Data.Gold);
+        PlayerPrefs.SetInt(_GOLD_PER_SEC_LEVEL_KEY, Data.GoldPerSecLevel);
+        PlayerPrefs.SetInt(_GOLD_PER_CLICK_LEVEL_KEY, Data.GoldPerClickLevel);
+    }
+    
+    /// <summary>
+    /// 골드 증가에 따라 화면 중앙 원 사이즈를 키우는 코루틴 메서드
+    /// </summary>
+    /// <param name="gold">증가된 골드</param>
+    private IEnumerator SizeUp(int gold)
+    {
+        float targetScaleValue = Mathf.Clamp(gold * 0.00001f,0.01f, 6.5f);
+        Vector2 targetScale = new Vector2(targetScaleValue, targetScaleValue);
+        Vector2 originScale = circle.localScale;
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < _scaleUpTime)
+        {
+            circle.localScale = Vector2.Lerp(originScale, targetScale, elapsedTime / _scaleUpTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        circle.localScale = targetScale;
+    }
+    
+    private IEnumerator GetGoldPerSec()
+    {
+        while (true)
+        {
+            SecAddGold();
+            yield return StartCoroutine(SizeUp(Data.Gold));
+            yield return _goldPerSecDelay;
+        }
     }
 }
