@@ -1,0 +1,7 @@
+public class #SCRIPTNAME#View : ViewBase<#SCRIPTNAME#Model>
+{
+    public override void UpdateView(string propertyName)
+    {
+        
+    }
+}

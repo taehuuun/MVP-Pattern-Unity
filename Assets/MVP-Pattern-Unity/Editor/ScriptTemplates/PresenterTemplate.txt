@@ -1,0 +1,8 @@
+using UnityEngine;
+
+[RequireComponent(typeof(#SCRIPTNAME#Model))]
+[RequireComponent(typeof(#SCRIPTNAME#View))]
+public class #SCRIPTNAME#Presenter : PresenterBase<#SCRIPTNAME#Model>
+{
+
+}
