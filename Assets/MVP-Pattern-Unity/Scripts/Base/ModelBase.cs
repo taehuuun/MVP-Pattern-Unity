@@ -11,10 +11,7 @@ public abstract class ModelBase : MonoBehaviour
     /// <summary>
     /// Model의 초기화를 진행하는 메서드
     /// </summary>
-    public virtual void Initialize()
-    {
-        
-    }
+    public virtual void Initialize() { }
     
     /// <summary>
     /// 모델 내 이벤트에 리스너를 추가하는 메서드
