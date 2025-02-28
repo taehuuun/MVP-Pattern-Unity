@@ -1,4 +1,4 @@
-using UnityEngine;
+using MethodType = #SCRIPTNAME#Model.Model; 
 
 [RequireComponent(typeof(#SCRIPTNAME#Model))]
 [RequireComponent(typeof(#SCRIPTNAME#View))]

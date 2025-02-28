@@ -8,10 +8,8 @@ public class ClickerView : ViewBase<ClickerModel>
         GoldPerClickText,
         CurrentGoldText,
         GoldPerSecText,
-        ClickUpgradeTitleText,
         ClickUpgradeLevelText,
         ClickUpgradeCostText,
-        SecUpgradeTitleText,
         SecUpgradeLevelText,
         SecUpgradeCostText
     }
@@ -22,18 +20,20 @@ public class ClickerView : ViewBase<ClickerModel>
         ClickUpgradeBtn,
         SecUpgradeBtn
     }
-
-    /// <inheritdoc cref="ViewBase{TModel}.Initialize"/>
-    public override void Initialize(PresenterBase<ClickerModel> presenter)
+    
+    protected override void InitializeBind()
     {
-        base.Initialize(presenter);
-        
+        base.InitializeBind();
         Bind<TMP_Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
+    }
 
-        GetBindUI<Button>((int)Buttons.TouchPanelBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.Method.ClickAddGold));
-        GetBindUI<Button>((int)Buttons.ClickUpgradeBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.Method.UpgradeGoldPerClick));
-        GetBindUI<Button>((int)Buttons.SecUpgradeBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.Method.UpgradeGoldPerSec));
+    protected override void InitializeEvents(PresenterBase<ClickerModel> presenter)
+    {
+        base.InitializeEvents(presenter);
+        GetBind<Button>((int)Buttons.TouchPanelBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.MethodType.ClickAddGold));
+        GetBind<Button>((int)Buttons.ClickUpgradeBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerClick));
+        GetBind<Button>((int)Buttons.SecUpgradeBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerSec));
     }
 
     public override void UpdateView(string propertyName)
@@ -41,7 +41,7 @@ public class ClickerView : ViewBase<ClickerModel>
         switch (propertyName)
         {
             case nameof(ClickerModel.Data.Gold):
-                GetBindUI<TMP_Text>((int)Texts.CurrentGoldText).text = $"{GetModel().Data.Gold} G";
+                GetBind<TMP_Text>((int)Texts.CurrentGoldText).text = $"{GetModel().Data.Gold} G";
                 break;
             case nameof(ClickerModel.Data.GoldPerClickLevel):
                 UpdateGoldPerClickUpdateUI();
@@ -54,15 +54,15 @@ public class ClickerView : ViewBase<ClickerModel>
 
     private void UpdateGoldPerClickUpdateUI()
     {
-        GetBindUI<TMP_Text>((int)Texts.GoldPerClickText).text = $"+{GetModel().CurrentGoldPerClick} / Click";
-        GetBindUI<TMP_Text>((int)Texts.ClickUpgradeLevelText).text = $"Next Lv: {GetModel().Data.GoldPerClickLevel}";
-        GetBindUI<TMP_Text>((int)Texts.ClickUpgradeCostText).text = $"Next Cost: {GetModel().NextGoldPerClickCost}";
+        GetBind<TMP_Text>((int)Texts.GoldPerClickText).text = $"+{GetModel().CurrentGoldPerClick} / Click";
+        GetBind<TMP_Text>((int)Texts.ClickUpgradeLevelText).text = $"Next Lv: {GetModel().Data.GoldPerClickLevel}";
+        GetBind<TMP_Text>((int)Texts.ClickUpgradeCostText).text = $"Next Cost: {GetModel().NextGoldPerClickCost}";
     }
 
     private void UpdateGoldPerSecUpdateUI()
     {
-        GetBindUI<TMP_Text>((int)Texts.GoldPerSecText).text = $"+{GetModel().CurrentGoldPerSec} / Sec";
-        GetBindUI<TMP_Text>((int)Texts.SecUpgradeLevelText).text = $"Next Lv: {GetModel().Data.GoldPerSecLevel}";
-        GetBindUI<TMP_Text>((int)Texts.SecUpgradeCostText).text = $"Next Cost: {GetModel().NextGoldPerSecCost}";
+        GetBind<TMP_Text>((int)Texts.GoldPerSecText).text = $"+{GetModel().CurrentGoldPerSec} / Sec";
+        GetBind<TMP_Text>((int)Texts.SecUpgradeLevelText).text = $"Next Lv: {GetModel().Data.GoldPerSecLevel}";
+        GetBind<TMP_Text>((int)Texts.SecUpgradeCostText).text = $"Next Cost: {GetModel().NextGoldPerSecCost}";
     }
 }

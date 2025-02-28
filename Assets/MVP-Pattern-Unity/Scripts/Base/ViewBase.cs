@@ -3,19 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-/// <summary>
-/// IView 인터페이스를 상속 받는 모든 View의 부모 추상 클래스
-/// </summary>
 public abstract class ViewBase<TModel> : MonoBehaviour where TModel : ModelBase
 {
-    private readonly Dictionary<Type, List<object>> _bindObjects = new();
-
-    private PresenterBase<TModel> _presenter;
+    private readonly Dictionary<Type, List<Object>> _bindObjects = new();
+    
+    protected PresenterBase<TModel> p_presenter;
     
     /// <summary>
     /// View의 초기화를 진행하는 메서드
     /// </summary>
-    public virtual void Initialize(PresenterBase<TModel> presenter) => _presenter = presenter;
+    public void Initialize(PresenterBase<TModel> presenter)
+    {
+        p_presenter = presenter;
+        InitializeBind();
+        InitializeEvents(presenter);
+    }
+    
+    protected virtual void InitializeBind() { }
+    
+    protected virtual void InitializeEvents(PresenterBase<TModel> presenter) { }
     
     /// <summary>
     /// Model 변경 시 View를 업데이트 하는 메서드
@@ -33,78 +39,77 @@ public abstract class ViewBase<TModel> : MonoBehaviour where TModel : ModelBase
     /// </summary>
     public virtual void HideView() => gameObject.SetActive(false);
 
-    protected TModel GetModel() => _presenter.GetModel();
+    /// <summary>
+    /// 현재 Presenter의 Model 가져오기
+    /// </summary>
+    protected TModel GetModel() => p_presenter.GetModel();
     
-    protected virtual void Bind<T>(Type bindType) where T : Object
+    protected virtual void Bind<T>(Type enumType) where T : Object
     {
         if (!_bindObjects.ContainsKey(typeof(T)))
         {
-            _bindObjects.Add(typeof(T), new List<object>());
+            _bindObjects[typeof(T)] = new List<Object>();
         }
 
-        foreach (var bindName in Enum.GetNames(bindType))
+        foreach (string name in Enum.GetNames(enumType))
         {
-            var component = FindUI<T>(gameObject, bindName, true);
+            Object component = typeof(T) == typeof(GameObject)
+                ? FindComponent(gameObject, name, true)
+                : FindComponent<T>(gameObject, name, true);
 
-            if (component == null)
+            if (component != null)
             {
-                Debug.LogWarning($"[ViewBase] {gameObject.name}에서 {typeof(T)}을(를) 바인딩하지 못했습니다");
-                continue;
+                _bindObjects[typeof(T)].Add(component);
             }
-            
-            _bindObjects[typeof(T)].Add(component);
+            else
+            {
+                Debug.LogWarning($"[{GetType().Name}] {gameObject.name}에서 {name} ({typeof(T)})을(를) 찾을 수 없습니다.");
+            }
         }
+
     }
-    protected T GetBindUI<T>(int uiIndex) where T : Object
+    protected T GetBind<T>(int index) where T : Object
     {
-        if (!_bindObjects.TryGetValue(typeof(T), out var bindUI) || uiIndex < 0 || uiIndex >= bindUI.Count)
+        if (_bindObjects.TryGetValue(typeof(T), out var objects) && objects.Count > index && index >= 0)
         {
-            Debug.LogWarning($"{gameObject.name}의 {typeof(T)} 유형에 대한 UI 인덱스 {uiIndex}가 잘못되었습니다");
-            return null;
+            return objects[index] as T;
         }
         
-        return bindUI[uiIndex] as T;
+        Debug.LogWarning($"[{GetType().Name}] {gameObject.name}: {typeof(T)}에 대한 잘못된 바인딩 인덱스 ({index})");
+        return null;
     }
 
-    private T FindUI<T>(GameObject gameObject, string name, bool recursive = false) where T : Object
+    private GameObject FindComponent(GameObject root, string name, bool recursive = false) => FindComponent<Transform>(root, name, recursive)?.gameObject;
+    
+    private T FindComponent<T>(GameObject root, string name, bool recursive = false) where T : Object
     {
-        T result = null;
-        
-        if (gameObject == null)
+        if (root == null)
         {
             return null;
         }
 
         if (recursive)
         {
-            foreach (var component in gameObject.GetComponentsInChildren<T>(true))
+            foreach (T component in root.GetComponentsInChildren<T>(true))
             {
                 if (string.IsNullOrEmpty(name) || component.name == name)
                 {
-                    result = component;
-                    break;
+                    return component;
                 }
             }
         }
         else
         {
-            for (int i = 0; i < gameObject.transform.childCount; i++)
+            foreach (Transform child in root.transform)
             {
-                var child = gameObject.transform.GetChild(i).gameObject;
-
-                if(child.name == name && child.TryGetComponent(out T component))
+                if (child.name == name && child.TryGetComponent(out T component))
                 {
-                    result = component;
-                    break;
+                    return component;
                 }
             }
         }
 
-        if (result == null)
-        {
-            Debug.LogWarning($"[ViewBase] {typeof(T)}타입 ({name})가 {gameObject.name}에 없습니다");
-        }
-        
-        return result;
+        Debug.LogWarning($"[{GetType().Name}] {typeof(T)} ({name})이(가) {root.name}에 없습니다.");
+        return null;
     }
 }

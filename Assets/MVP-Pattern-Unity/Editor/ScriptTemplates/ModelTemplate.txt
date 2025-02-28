@@ -1,4 +1,18 @@
 public class #SCRIPTNAME#Model : ModelBase
 {
-
+    public enum MethodType { }
+    
+    protected override void InitializeMethods()
+    {
+        base.InitializeMethods();
+    }
+    
+    protected override void InitializeNestedProperties()
+    {
+        base.InitializeNestedProperties();
+    }
+    
+    protected override void InitializeProperties()
+    {
+    }
 }

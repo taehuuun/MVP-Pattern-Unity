@@ -10,23 +10,13 @@ public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TM
     private TModel _model;                // ModelBase를 상속 받는 model 필드
     private ViewBase<TModel> _view;       // ViewBase를 상속 받는 view 필드
 
+    private bool _initialized;
+
     /// <summary>
     /// 최초 활성화 시 호출되는 메서드
     /// </summary>
-    protected void Start()
+    private void Start()
     {
-        if (TryGetComponent(out _model) == false)
-        {
-            Debug.LogError("Model이 null 입니다");
-            return;
-        }
-
-        if (TryGetComponent(out _view) == false)
-        {
-            Debug.LogError("View가 null 입니다");
-            return;
-        }
-        
         Initialize();
     }
 
@@ -35,57 +25,72 @@ public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TM
     /// </summary>
     protected virtual void Initialize()
     {
+        if (_initialized)
+        {
+            return;
+        }
+        
+        if (TryGetComponent(out _model) == false)
+        {
+            Debug.LogError($"[{GetType().Name}] Model이 null 입니다");
+            return;
+        }
+
+        if (TryGetComponent(out _view) == false)
+        {
+            Debug.LogError($"[{GetType().Name}] View가 null 입니다");
+            return;
+        }
+        
         _model.PropertyChanged += OnModelPropertyChanged;
         
         _view.Initialize(this);
         _model.Initialize();
+        
+        InvokeMethod(ModelBase.BaseMethodType.InitializeProperties);
+        
+        _initialized = true;
     }
     
     /// <summary>
     /// View의 ShowView 메서드를 호출하는 메서드
     /// </summary>
-    public virtual void ShowView()
-    {
-        if (_view == null)
-        {
-            Debug.LogWarning("[PresenterBase] View를 활성화 할 수 없음, View가 Null임");
-            return;
-        }
-        
-        _view.ShowView();
-    }
+    public virtual void ShowView() => ExecuteSafe(_view, v => v.ShowView());
 
     /// <summary>
     /// View를 HideView 메서드를 호출하는 메서드
     /// </summary>
-    public virtual void HideView()
-    {
-        if (_view == null)
-        { 
-            Debug.LogWarning("[PresenterBase] View를 비활성화 할 수 없음, View가 Null임");
-            return;
-        }
-        
-        _view.HideView();
-    }
+    public virtual void HideView() => ExecuteSafe(_view, v => v.HideView());
 
     public TModel GetModel() => _model;
-
-    public void InvokeMethod(Enum methodType)
+    public void InvokeMethod(Enum methodType) 
+        => ExecuteSafe(_model, m => m.InvokeMethod(methodType));
+    public void InvokeMethod<TParam>(Enum methodType, TParam param) 
+        => ExecuteSafe(_model, m => m.InvokeMethod(methodType, param));
+    public void InvokeMethod<TParam1, TParam2>(Enum methodType, TParam1 param, TParam2 param2) 
+        => ExecuteSafe(_model, m => m.InvokeMethod(methodType, param, param2));
+    public TResult InvokeMethod<TResult>(Enum methodType) 
+        => ExecuteSafe(_model, m => m.InvokeMethod<TResult>(methodType));
+    public TResult InvokeMethod<TParam, TResult>(Enum methodType, TParam param) 
+        => ExecuteSafe(_model, m => m.InvokeMethod<TParam, TResult>(methodType, param));
+    
+    private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e) => ExecuteSafe(_view, v => v.UpdateView(e.PropertyName));
+    private void ExecuteSafe<T>(T obj, Action<T> action) where T : class
     {
-        if (_model == null)
+        if (obj == null)
         {
-            Debug.LogError("[PresenterBase] Model 내 메서드 호출 실패, Model이 Null임");
+            Debug.LogWarning($"[{GetType().Name}] {typeof(T).Name}가 Null임");
             return;
         }
-
-        _model.InvokeMethod(methodType);
+        action(obj);
     }
-    
-    protected void ForceUpdateView(string propertyName) => _view.UpdateView(propertyName);
-
-    private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+    private TResult ExecuteSafe<T, TResult>(T obj, Func<T, TResult> func) where T : class
     {
-        _view.UpdateView(e.PropertyName);
+        if (obj == null)
+        {
+            Debug.LogError($"[{GetType().Name}] {typeof(T).Name}가 Null임");
+            return default;
+        }
+        return func(obj);
     }
 }
