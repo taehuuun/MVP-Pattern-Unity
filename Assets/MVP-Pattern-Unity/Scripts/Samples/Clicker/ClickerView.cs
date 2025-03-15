@@ -36,7 +36,7 @@ public class ClickerView : ViewBase
         GetBind<Button>((int)Buttons.SecUpgradeBtn).onClick.AddListener(() => InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerSec));
     }
 
-    public override void UpdateView(string propertyName)
+    protected override void UpdateView(string propertyName)
     {
         switch (propertyName)
         {
