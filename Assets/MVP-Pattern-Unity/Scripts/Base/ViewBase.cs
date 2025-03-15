@@ -19,6 +19,7 @@ public abstract class ViewBase : MonoBehaviour
     
     private readonly Dictionary<Type, List<Object>> _bindObjects = new();
 
+    public void Initialize(PresenterBase presenter) => _presenter = presenter;
     public void InitializeViewMethod()
     {
         AddMethod(ViewBaseMethodType.InitializeBindComponent, (Action)InitializeBindComponent);
@@ -28,8 +29,6 @@ public abstract class ViewBase : MonoBehaviour
         AddMethod(ViewBaseMethodType.HideView, (Action)HideView);
         AddMethod(ViewBaseMethodType.ShowView, (Action)ShowView);
     }
-
-    public void InitializePresenter(PresenterBase presenter) => _presenter = presenter;
     protected virtual void InitializeBindComponent() { }
     protected virtual void InitializeEventListeners() { }
     protected virtual void SetupView() { }
@@ -38,7 +37,7 @@ public abstract class ViewBase : MonoBehaviour
     /// 프로퍼티 변경 시 해당하는 UI를 업데이트 하는 메서드
     /// </summary>
     /// <param name="propertyName">변경 프로퍼티 명</param>
-    public virtual void UpdateView(string propertyName) { }
+    protected virtual void UpdateView(string propertyName) { }
 
     /// <summary>
     /// View를 활성화 시키는 메서드
