@@ -34,7 +34,7 @@ MVP는 Model-View-Presenter의 약자로, **UI(User Interface)**와 **비즈니�
 4. [Model] → 데이터 변경 및 알림 → [Presenter] → [View]
 ```
 
-![MVP](https://github.com/user-attachments/assets/6a8db886-c797-4bef-8b3f-02bf8ed372f9)
+![MVP](https://github.com/user-attachments/assets/5b1dd783-a5e8-4357-825d-b8effc81b540)
 
 ## 2. Base 클래스 설명
 
