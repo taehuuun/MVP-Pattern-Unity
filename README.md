@@ -10,7 +10,7 @@
 ### 레포지토리 복사
 1. Git에서 해당 레포지토리를 클론:
    ```bash
-   git clone <레포지토리 URL>
+   git clone https://github.com/taehuuun/MVP-Pattern-Unity.git
    ```
 2. 프로젝트 내 Scripts/Base 폴더 또는 필요한 MVP 관련 파일을 복사하여 붙여넣기.
 
