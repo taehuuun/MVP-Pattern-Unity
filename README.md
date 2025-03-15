@@ -39,32 +39,42 @@ MVP는 Model-View-Presenter의 약자로, **UI(User Interface)**와 **비즈니�
 ## 2. Base 클래스 설명
 
 ### 🔗 ModelBase
-`ModelBase`는 모든 **Model** 클래스의 부모로써 데이터를 관리하고, Presenter와의 상호작용을 지원하는 역할을 수행합니다. 데이터 초기화 및 데이터 변경 감지 등을 처리하며 게임의 비즈니스 로직의 핵심을 구성합니다.
+`ModelBase`는 모든 **Model** 클래스의 부모입니다.</br>데이터 초기화 및 데이터 변경 감지 등을 처리하며 게임의 비즈니스 로직의 핵심을 구성합니다.
 
 #### 핵심 메서드:
-- `InitializeMethods`: Model 내 메서드 중 Presenter를 통해 호출 할 메서드를 AddMethod를 통해 등록 시키는 메서드
-- `InitializeProperties`: Model 내 프로퍼티를 초기화 하기 위한 메서드
+- `Initialize`: 해당 Model과 연결될 Presenter를 초기화 하는 메서드
+- `InitializeModelMethods`: 초기화 시 Presenter를 통해 호출 할 메서드를 AddMethod를 통해 등록 시키는 메서드
 - `InitializeNestedProperties`: Model 내 참조 타입의 프로퍼티 변경 감지를 위해 이벤트를 등록하는 메서드
-- `AddMethod`: Model 내 메서드들을 등록하기 위한 메서드
-- `InvokeMethod`: 등록된 메서드를 Presenter를 통해 호출하기 위한 메서드
+- `InitializeProperties`: Model 내 프로퍼티를 초기화 하기 위한 메서드
+- `InitializeInvokeMethod`: 모든 초기화 완료 시 최초 실행되는 메서드
+- `AddMethod`: 메서드 중 Presenter를 통해 외부에서 호울 할 메소드를 등록하기 위한 메서드
+- `RemoveMethod`: 등록된 메서드를 제거하는 메서드 
+- `GetProperty`: 프로퍼티 명을 통해 등록된 프로퍼티의 값을 반환하는 메서드
+- `SetProperty`: 프로퍼티 명에 해당하는 프로퍼티의 값 변경 및 프로퍼티 변경 이벤트를 발생 시키는 메서드
+- `OnNestedPropertyChanged`: Model 내 참조 타입의 프로퍼티 값 변경 시 호출되는 메서드
+- `OnPropertyChanged`: 프로퍼티 변경 시 호출되는 메서드
+
 ```csharp
 public abstract class ModelBase : MonoBehaviour, INotifyPropertyChanged
 {
     ...
-    public void Initialize()
-    {
-        InitializeMethods();
-        InitializeNestedProperties();
-        InitializeProperties();
-    }
-    
-    protected virtual void InitializeMethods() { }
+    public void Initialize(PresenterBase) { }
+    public virtual void InitializeModelMethods() { }
     protected virtual void InitializeNestedProperties() { }
-    protected abstract void InitializeProperties();
+    protected virtual void InitializeProperties() { }
+    protected virtual void InitializeInvokeMethod() { }
+    protected void AddMethod(Enum, Delegate) { }
+    protected void RemoveMethod(Enum) { }
+    public T GetProperty<T>([CallerMemberName]string = null) { }
+    protected void SetProperty<T>(T, [CallerMemberName] string = null) { }
+    protected virtual void OnNestedPropertyChanged(object, PropertyChangedEventArgs) { }
+    private void OnPropertyChanged(string) { }
 }
 ```
 ### 🔗 ViewBase
-`ViewBase`는 모든 **View** 클래스의 부모클래스로, UI 컴포넌트(버튼, 텍스트 등)를 초기화하고 Presenter와 상호작용합니다. **ViewBase**는 사용자 인터페이스를 담당합니다.
+`ViewBase`는 모든 **View** 클래스의 부모클래스 입니다
+
+UI 컴포넌트(버튼, 텍스트 등)를 바인딩 및 초기화하고 사용자 상호작용을 담당합니다.
 
 
 #### 주요 역할:
@@ -72,25 +82,35 @@ public abstract class ModelBase : MonoBehaviour, INotifyPropertyChanged
 - Model의 변경 사항을 UI에 반영
 
 #### 핵심 메서드:
-- `InitializeBind()` : UI요소 및 오브젝트들을 바인딩을 하기 위한 메서드
-- `InitializeEvents(PresenterBase<TModel>)`: 버튼, 슬라이더의 이벤트 리스너 추가를 위한 메서드
-- `UpdateView(string)`: Model 내 변경된 프로퍼티에 맞게 UI를 업데이트 하는 메서드
+- `Initialize`: 해당 View와 연결 될 Presenter를 초기화 하는 메서드
+- `InitializeViewMethod`: View 내 기본 메서드 중 Presenter를 통해 호출되는 메서드를 등록하는 메서드
+- `InitializeBindComponent` : UI요소 및 오브젝트들을 바인딩을 하기 위한 메서드
+- `InitializeEventListeners`: 버튼, 슬라이더 등 UI 이벤트 리스너 추가를 위한 메서드
+- `SetupView`: 초기화 완료 후 UI를 최초 업데이트 하는 메서드
+- `UpdateView`: Model 내 변경된 프로퍼티에 맞게 UI를 업데이트 하는 메서드
+- `ShowView`: View를 활성화하는 메서드
+- `HideView`: View를 비활성화하는 메서드
+- `InvokeMethod`: Presenter의 등록되어있는 메서드를 호출하는 메서드
+- `GetProperty`: Presenter를 통해 해당하는 프로퍼티 값을 가져오는 메서드
+- `Bind`: UI요소를 바인딩하는 메서드
+- `GetBind`: 바인딩된 UI 요소를 반환하는 메서드
 
 ``` csharp
-public abstract class ViewBase<TModel> : MonoBehaviour where TModel : ModelBase
+public abstract class ViewBase : MonoBehaviour
 {
     ...
     
-    public virtual void Initialize(PresenterBase<TModel> presenter)
-    {
-        p_presenter = presenter;
-        InitializeBind();
-        InitializeEvents(presenter);
-    }
-    
-    public abstract void UpdateView(string propertyName);
-    protected virtual void InitializeBind() { }
-    protected virtual void InitializeEvents(PresenterBase<TModel> presenter) { }
+    public void Initialize(PresenterBase) { }
+    protected virtual void InitializeBindComponent() { }
+    protected virtual void InitializeEventListeners() { }
+    protected virtual void SetupView() { }
+    protected virtual void UpdateView(string) { }
+    protected virtual void ShowView() { }
+    protected virtual void HideView() { }
+    protected void InvokeMethod(Enum, params object[]) { }
+    protected TResult InvokeMethod<TResult>(Enum, params object[]) { }
+    protected virtual void Bind<T>(Type) where T : Object { }
+    protected T GetBind<T>(int) where T : Object { }
 }
 ```
 
@@ -103,24 +123,24 @@ public abstract class ViewBase<TModel> : MonoBehaviour where TModel : ModelBase
 
 #### 핵심 메서드:
 - `Initialize`: Model 및 View 초기화
-- `InvokeMethod`: Model의 메서드를 호출
-- `ShowView/HideView`: View의 활성화/비활성화
+- `AddMethod`: Model/View의 메서드를 등록하는 메서드
+- `RemoveMethod`: Model/View의 메서드를 제거하는 메서드
+- `InvokeMethod`: Model/View의 메서드를 호출하는 메서드
+- `GetModelProperty`: Model의 프로퍼티 값을 반환하는 메서드
+- `ShowView/HideView`: View의 활성화/비활성화 하는 메서드
 
 ```csharp
-public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TModel : ModelBase
+public abstract class PresenterBase : MonoBehaviour, IPresenter
 {
     ...
-    protected virtual void Initialize()
-    {
-        /* Model, View 초기화 로직 실행*/
-    }
-    
+    public virtual void Initialize() { /* Model, View 초기화 로직 실행*/ }
     public virtual void ShowView() => ExecuteSafe(_view, v => v.ShowView());
     public virtual void HideView() => ExecuteSafe(_view, v => v.HideView());
-    public void InvokeMethod(Enum methodType) { /* 반환값 X, 매개변수X */ }
-    public void InvokeMethod<TParam>(Enum methodType, TParam param) { /* 반환값 X, 매개변수 1개 */ }
-    
-    ... 호출 타입에 맞는 InvokeMethod ...
+    public void AddMethod(Enum, Delegate) { }
+    public void RemoveMethod(Enum) { }
+    public void InvokeMethod(Enum, params object[]) { }
+    public TResult InvokeMethod<TResult>(Enum, params object[]) { }
+    public T GetModelProperty<T>(string) { }
 }
 ```
 ---
@@ -174,33 +194,84 @@ public class ClickerModel : ModelBase
     ...
         
     public PlayerData Data { get; private set; } = new();
+    public int CurrentGoldPerClick
+    {
+        get => GetProperty<int>();
+        set => SetProperty(value);
+    }
+    public int CurrentGoldPerSec
+    {
+        get => GetProperty<int>();
+        set => SetProperty(value);
+    }
+    public int NextGoldPerClickCost
+    {
+        get => GetProperty<int>();
+        set => SetProperty(value);
+    }
+    public int NextGoldPerSecCost
+    {
+        get => GetProperty<int>();
+        set => SetProperty(value);
+    }
     
     ...
 
-    protected override void InitializeMethods()
+    public override void InitializeModelMethods()
     {
-        base.InitializeMethods();
+        base.InitializeModelMethods();
         
-        AddMethod(MethodType.ClickAddGold, ClickAddGold);
-        AddMethod(MethodType.SecAddGold, SecAddGold);
-        AddMethod(MethodType.UpgradeGoldPerClick, UpgradeGoldPerClick);
-        AddMethod(MethodType.UpgradeGoldPerSec, UpgradeGoldPerSec);
-        AddMethod(MethodType.StartGetGoldPerSec, StartGetGoldPerSec);
+        AddMethod(MethodType.ClickAddGold, (Action)ClickAddGold);
+        AddMethod(MethodType.SecAddGold, (Action)SecAddGold);
+        AddMethod(MethodType.UpgradeGoldPerClick, (Action)UpgradeGoldPerClick);
+        AddMethod(MethodType.UpgradeGoldPerSec, (Action)UpgradeGoldPerSec);
     }
+    
     protected override void InitializeNestedProperties()
     {
         base.InitializeNestedProperties();
         
         Data.PropertyChanged += OnNestedPropertyChanged;
     }
+    
+    protected override void OnNestedPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        base.OnNestedPropertyChanged(sender, e);
+
+        switch (e.PropertyName)
+        {
+            case nameof(Data.Gold):
+                SetProperty(Data.Gold, nameof(Data.Gold));
+                break;
+            case nameof(Data.GoldPerClickLevel):
+                SetProperty(Data.GoldPerClickLevel, nameof(Data.GoldPerClickLevel));
+                break;
+            case nameof(Data.GoldPerSecLevel):
+                SetProperty(Data.GoldPerSecLevel, nameof(Data.GoldPerSecLevel));
+                break;
+        }
+    }
+    
     protected override void InitializeProperties()
     {
         ...
         Data.Gold = PlayerPrefs.GetInt(_GOLD_KEY,0);
         Data.GoldPerClickLevel = PlayerPrefs.GetInt(_GOLD_PER_CLICK_LEVEL_KEY, 0);
         Data.GoldPerSecLevel = PlayerPrefs.GetInt(_GOLD_PER_SEC_LEVEL_KEY, 0);
+        
+        CurrentGoldPerClick = _goldPerClickUpgrade.values[Data.GoldPerClickLevel];
+        CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.GoldPerSecLevel];
+        NextGoldPerClickCost = _goldPerClickUpgrade.costs[Data.GoldPerClickLevel+1];
+        NextGoldPerSecCost = _goldPerSecUpgrade.costs[Data.GoldPerSecLevel+1];
     }
 
+    protected override void InitializeInvokeMethod()
+    {
+        base.InitializeInvokeMethod();
+        
+        StartGetGoldPerSec();
+    }
+    
     private void StartGetGoldPerSec() => StartCoroutine(GetGoldPerSec()); 
     private void ClickAddGold() { /* 클릭 당 골드 증가량 만큼 골드를 증가 시키는 메서드  */ }
     private void SecAddGold() { /* 초 당 골드를 증가 시키는 메서드 */ }
@@ -222,7 +293,7 @@ ClickerView는 UI 상호작용 및 추적중인 프로퍼티가 바뀔 때 UI를
 
 #### 예제:
 ```csharp
-public class ClickerView : ViewBase<ClickerModel>
+public class ClickerView : ViewBase
 {
     private enum Texts
     {
@@ -242,39 +313,48 @@ public class ClickerView : ViewBase<ClickerModel>
         SecUpgradeBtn
     }
     
-    protected override void InitializeBind()
+    protected override void InitializeBindComponent()
     {
-        base.InitializeBind();
+        base.InitializeBindComponent();
         Bind<TMP_Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
     }
 
-    protected override void InitializeEvents(PresenterBase<ClickerModel> presenter)
+    protected override void InitializeEventListeners()
     {
-        base.InitializeEvents(presenter);
-        GetBind<Button>((int)Buttons.TouchPanelBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.MethodType.ClickAddGold));
-        GetBind<Button>((int)Buttons.ClickUpgradeBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerClick));
-        GetBind<Button>((int)Buttons.SecUpgradeBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerSec));
+        base.InitializeEventListeners();
+        GetBind<Button>((int)Buttons.TouchPanelBtn).onClick.AddListener(() => InvokeMethod(ClickerModel.MethodType.ClickAddGold));
+        GetBind<Button>((int)Buttons.ClickUpgradeBtn).onClick.AddListener(() => InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerClick));
+        GetBind<Button>((int)Buttons.SecUpgradeBtn).onClick.AddListener(() => InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerSec));
     }
 
-    public override void UpdateView(string propertyName)
+    protected override void UpdateView(string propertyName)
     {
         switch (propertyName)
         {
             case nameof(ClickerModel.Data.Gold):
-                GetBind<TMP_Text>((int)Texts.CurrentGoldText).text = $"{GetModel().Data.Gold} G";
+                GetBind<TMP_Text>((int)Texts.CurrentGoldText).text = $"{GetProperty<int>(propertyName)} G";
                 break;
             case nameof(ClickerModel.Data.GoldPerClickLevel):
-                UpdateGoldPerClickUpdateUI();
+                GetBind<TMP_Text>((int)Texts.ClickUpgradeLevelText).text = $"Next Lv: {GetProperty<int>(nameof(ClickerModel.Data.GoldPerClickLevel))}";
+                break;
+            case nameof(ClickerModel.CurrentGoldPerClick):
+                GetBind<TMP_Text>((int)Texts.GoldPerClickText).text = $"+{GetProperty<int>(nameof(ClickerModel.CurrentGoldPerClick))} / Click";
+                break;
+            case nameof(ClickerModel.NextGoldPerClickCost):
+                GetBind<TMP_Text>((int)Texts.ClickUpgradeCostText).text = $"Next Cost: {GetProperty<int>(nameof(ClickerModel.NextGoldPerClickCost))}";
+                break;
+            case nameof(ClickerModel.CurrentGoldPerSec):
+                GetBind<TMP_Text>((int)Texts.GoldPerSecText).text = $"+{GetProperty<int>(nameof(ClickerModel.CurrentGoldPerSec))} / Sec";
                 break;
             case nameof(ClickerModel.Data.GoldPerSecLevel):
-                UpdateGoldPerSecUpdateUI();
+                GetBind<TMP_Text>((int)Texts.SecUpgradeLevelText).text = $"Next Lv: {GetProperty<int>(nameof(ClickerModel.Data.GoldPerSecLevel))}";
+                break;
+            case nameof(ClickerModel.NextGoldPerSecCost):
+                GetBind<TMP_Text>((int)Texts.SecUpgradeCostText).text = $"Next Cost: {GetProperty<int>(nameof(ClickerModel.NextGoldPerSecCost))}";
                 break;
         }
     }
-
-    private void UpdateGoldPerClickUpdateUI() { /* 클릭 당 골드 UI 업데이트 로직 */ }
-    private void UpdateGoldPerSecUpdateUI() { /* 초 당 골드 UI 업데이트 로직 */ }
 }
 ```
 
@@ -289,15 +369,10 @@ ClickerPresenter는 View의 이벤트를 받아 Model의 로직을 실행합니�
 
 #### 예제:
 ```csharp
-public class ClickerPresenter : PresenterBase<ClickerModel>
+public class ClickerPresenter : PresenterBase
 {
-    protected override void Initialize()
-    {
-        base.Initialize();
-
-        InvokeMethod(MethodType.StartGetGoldPerSec);
-    }
 }
+
 ```
 ---
 
