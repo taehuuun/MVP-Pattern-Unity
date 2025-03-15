@@ -45,7 +45,7 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
         
         _model.PropertyChanged += OnModelPropertyChanged;
         _model.Initialize(this);
-        _view.InitializePresenter(this);
+        _view.Initialize(this);
         
         _model.InitializeModelMethods();
         _view.InitializeViewMethod();
@@ -88,13 +88,12 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
         InvokeMethod(ViewBaseMethodType.HideView);
     }
 
-    public T GetModelProperty<T>(string propertyName) => _model.GetProperty<T>(propertyName);
-
     public void AddMethod(Enum methodType, Delegate action) => _mvpMethodBridge.AddMethod(methodType, action);
+    public void RemoveMethod(Enum methodType) => _mvpMethodBridge.RemoveMethod(methodType);
     public void InvokeMethod(Enum methodType, params object[] parameters) => _mvpMethodBridge.InvokeMethod(methodType, parameters);
     public TResult InvokeMethod<TResult>(Enum methodType, params object[] parameters) => _mvpMethodBridge.InvokeMethod<TResult>(methodType, parameters);
-    public void RemoveMethod(Enum methodType) => _mvpMethodBridge.RemoveMethod(methodType);
     
+    public T GetModelProperty<T>(string propertyName) => _model.GetProperty<T>(propertyName);
     private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (_view == null)
@@ -103,6 +102,6 @@ public abstract class PresenterBase : MonoBehaviour, IPresenter
             return;
         }
         
-        _view.UpdateView(e.PropertyName);
+        InvokeMethod(ViewBaseMethodType.UpdateView, e.PropertyName);;
     }
 }
