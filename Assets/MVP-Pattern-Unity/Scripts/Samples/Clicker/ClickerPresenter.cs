@@ -1,11 +1,3 @@
-using MethodType = ClickerModel.MethodType;
-
-public class ClickerPresenter : PresenterBase<ClickerModel>
+public class ClickerPresenter : PresenterBase
 {
-    protected override void Initialize()
-    {
-        base.Initialize();
-
-        InvokeMethod(MethodType.StartGetGoldPerSec);
-    }
 }

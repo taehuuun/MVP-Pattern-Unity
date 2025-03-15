@@ -5,10 +5,11 @@ using UnityEngine;
 /// <summary>
 /// IPresenter 인터페이스를 상속 받는 모든 Presenter의 부모 추상 클래스
 /// </summary>
-public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TModel : ModelBase 
+public abstract class PresenterBase : MonoBehaviour, IPresenter 
 {
-    private TModel _model;                // ModelBase를 상속 받는 model 필드
-    private ViewBase<TModel> _view;       // ViewBase를 상속 받는 view 필드
+    private readonly MvpMethodBridge _mvpMethodBridge = new();
+    private ModelBase _model;                // ModelBase를 상속 받는 model 필드
+    private ViewBase _view;       // ViewBase를 상속 받는 view 필드
 
     private bool _initialized;
 
@@ -23,7 +24,7 @@ public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TM
     /// <summary>
     /// Presenter의 초기화를 진행하는 메서드
     /// </summary>
-    protected virtual void Initialize()
+    public virtual void Initialize()
     {
         if (_initialized)
         {
@@ -43,54 +44,65 @@ public abstract class PresenterBase<TModel> : MonoBehaviour, IPresenter where TM
         }
         
         _model.PropertyChanged += OnModelPropertyChanged;
+        _model.Initialize(this);
+        _view.InitializePresenter(this);
         
-        _view.Initialize(this);
-        _model.Initialize();
+        _model.InitializeModelMethods();
+        _view.InitializeViewMethod();
         
+        InvokeMethod(ViewBaseMethodType.InitializeBindComponent);
+        InvokeMethod(ViewBaseMethodType.InitializeEventListeners);
+        InvokeMethod(ModelBase.BaseMethodType.InitializeNestedProperties);
         InvokeMethod(ModelBase.BaseMethodType.InitializeProperties);
+        InvokeMethod(ViewBaseMethodType.SetupView);
         
+        InvokeMethod(ModelBase.BaseMethodType.InitializeInvokeMethod);
         _initialized = true;
     }
-    
+
     /// <summary>
     /// View의 ShowView 메서드를 호출하는 메서드
     /// </summary>
-    public virtual void ShowView() => ExecuteSafe(_view, v => v.ShowView());
+    public virtual void ShowView()
+    {
+        if (_view == null)
+        {
+            Debug.LogError($"[{GetType().Name}] View가 null 입니다");
+            return;
+        }
+        
+        InvokeMethod(ViewBaseMethodType.ShowView);
+    }
 
     /// <summary>
     /// View를 HideView 메서드를 호출하는 메서드
     /// </summary>
-    public virtual void HideView() => ExecuteSafe(_view, v => v.HideView());
-
-    public TModel GetModel() => _model;
-    public void InvokeMethod(Enum methodType) 
-        => ExecuteSafe(_model, m => m.InvokeMethod(methodType));
-    public void InvokeMethod<TParam>(Enum methodType, TParam param) 
-        => ExecuteSafe(_model, m => m.InvokeMethod(methodType, param));
-    public void InvokeMethod<TParam1, TParam2>(Enum methodType, TParam1 param, TParam2 param2) 
-        => ExecuteSafe(_model, m => m.InvokeMethod(methodType, param, param2));
-    public TResult InvokeMethod<TResult>(Enum methodType) 
-        => ExecuteSafe(_model, m => m.InvokeMethod<TResult>(methodType));
-    public TResult InvokeMethod<TParam, TResult>(Enum methodType, TParam param) 
-        => ExecuteSafe(_model, m => m.InvokeMethod<TParam, TResult>(methodType, param));
-    
-    private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e) => ExecuteSafe(_view, v => v.UpdateView(e.PropertyName));
-    private void ExecuteSafe<T>(T obj, Action<T> action) where T : class
+    public virtual void HideView()
     {
-        if (obj == null)
+        if (_view == null)
         {
-            Debug.LogWarning($"[{GetType().Name}] {typeof(T).Name}가 Null임");
+            Debug.LogError($"[{GetType().Name}] View가 null 입니다");
             return;
         }
-        action(obj);
+        
+        InvokeMethod(ViewBaseMethodType.HideView);
     }
-    private TResult ExecuteSafe<T, TResult>(T obj, Func<T, TResult> func) where T : class
+
+    public T GetModelProperty<T>(string propertyName) => _model.GetProperty<T>(propertyName);
+
+    public void AddMethod(Enum methodType, Delegate action) => _mvpMethodBridge.AddMethod(methodType, action);
+    public void InvokeMethod(Enum methodType, params object[] parameters) => _mvpMethodBridge.InvokeMethod(methodType, parameters);
+    public TResult InvokeMethod<TResult>(Enum methodType, params object[] parameters) => _mvpMethodBridge.InvokeMethod<TResult>(methodType, parameters);
+    public void RemoveMethod(Enum methodType) => _mvpMethodBridge.RemoveMethod(methodType);
+    
+    private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (obj == null)
+        if (_view == null)
         {
-            Debug.LogError($"[{GetType().Name}] {typeof(T).Name}가 Null임");
-            return default;
+            Debug.LogError($"[{GetType().Name}] View가 null 입니다");
+            return;
         }
-        return func(obj);
+        
+        _view.UpdateView(e.PropertyName);
     }
 }

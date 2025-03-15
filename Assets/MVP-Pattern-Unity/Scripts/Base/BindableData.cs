@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-public abstract class BindableModel : INotifyPropertyChanged
+public abstract class BindableData : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
 

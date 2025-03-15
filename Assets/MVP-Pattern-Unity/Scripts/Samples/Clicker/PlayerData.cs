@@ -1,4 +1,4 @@
-public class PlayerData : BindableModel
+public class PlayerData : BindableData
 {
     public int Gold
     {
@@ -18,7 +18,7 @@ public class PlayerData : BindableModel
         set => SetProperty(ref _goldPerSecLevel, value);
     }
     
-    private int _gold;
-    private int _goldPerClickLevel;
-    private int _goldPerSecLevel;
+    private int _gold = int.MinValue;
+    private int _goldPerClickLevel = int.MinValue;
+    private int _goldPerSecLevel = int.MinValue;
 }

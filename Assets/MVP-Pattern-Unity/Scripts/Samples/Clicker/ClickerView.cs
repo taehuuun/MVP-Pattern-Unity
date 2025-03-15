@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine.UI;
 
-public class ClickerView : ViewBase<ClickerModel>
+public class ClickerView : ViewBase
 {
     private enum Texts
     {
@@ -20,20 +20,20 @@ public class ClickerView : ViewBase<ClickerModel>
         ClickUpgradeBtn,
         SecUpgradeBtn
     }
-    
-    protected override void InitializeBind()
+
+    protected override void InitializeBindComponent()
     {
-        base.InitializeBind();
+        base.InitializeBindComponent();
         Bind<TMP_Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
     }
 
-    protected override void InitializeEvents(PresenterBase<ClickerModel> presenter)
+    protected override void InitializeEventListeners()
     {
-        base.InitializeEvents(presenter);
-        GetBind<Button>((int)Buttons.TouchPanelBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.MethodType.ClickAddGold));
-        GetBind<Button>((int)Buttons.ClickUpgradeBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerClick));
-        GetBind<Button>((int)Buttons.SecUpgradeBtn).onClick.AddListener(() => presenter.InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerSec));
+        base.InitializeEventListeners();
+        GetBind<Button>((int)Buttons.TouchPanelBtn).onClick.AddListener(() => InvokeMethod(ClickerModel.MethodType.ClickAddGold));
+        GetBind<Button>((int)Buttons.ClickUpgradeBtn).onClick.AddListener(() => InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerClick));
+        GetBind<Button>((int)Buttons.SecUpgradeBtn).onClick.AddListener(() => InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerSec));
     }
 
     public override void UpdateView(string propertyName)
@@ -41,28 +41,26 @@ public class ClickerView : ViewBase<ClickerModel>
         switch (propertyName)
         {
             case nameof(ClickerModel.Data.Gold):
-                GetBind<TMP_Text>((int)Texts.CurrentGoldText).text = $"{GetModel().Data.Gold} G";
+                GetBind<TMP_Text>((int)Texts.CurrentGoldText).text = $"{GetProperty<int>(propertyName)} G";
                 break;
             case nameof(ClickerModel.Data.GoldPerClickLevel):
-                UpdateGoldPerClickUpdateUI();
+                GetBind<TMP_Text>((int)Texts.ClickUpgradeLevelText).text = $"Next Lv: {GetProperty<int>(nameof(ClickerModel.Data.GoldPerClickLevel))}";
+                break;
+            case nameof(ClickerModel.CurrentGoldPerClick):
+                GetBind<TMP_Text>((int)Texts.GoldPerClickText).text = $"+{GetProperty<int>(nameof(ClickerModel.CurrentGoldPerClick))} / Click";
+                break;
+            case nameof(ClickerModel.NextGoldPerClickCost):
+                GetBind<TMP_Text>((int)Texts.ClickUpgradeCostText).text = $"Next Cost: {GetProperty<int>(nameof(ClickerModel.NextGoldPerClickCost))}";
+                break;
+            case nameof(ClickerModel.CurrentGoldPerSec):
+                GetBind<TMP_Text>((int)Texts.GoldPerSecText).text = $"+{GetProperty<int>(nameof(ClickerModel.CurrentGoldPerSec))} / Sec";
                 break;
             case nameof(ClickerModel.Data.GoldPerSecLevel):
-                UpdateGoldPerSecUpdateUI();
+                GetBind<TMP_Text>((int)Texts.SecUpgradeLevelText).text = $"Next Lv: {GetProperty<int>(nameof(ClickerModel.Data.GoldPerSecLevel))}";
+                break;
+            case nameof(ClickerModel.NextGoldPerSecCost):
+                GetBind<TMP_Text>((int)Texts.SecUpgradeCostText).text = $"Next Cost: {GetProperty<int>(nameof(ClickerModel.NextGoldPerSecCost))}";
                 break;
         }
-    }
-
-    private void UpdateGoldPerClickUpdateUI()
-    {
-        GetBind<TMP_Text>((int)Texts.GoldPerClickText).text = $"+{GetModel().CurrentGoldPerClick} / Click";
-        GetBind<TMP_Text>((int)Texts.ClickUpgradeLevelText).text = $"Next Lv: {GetModel().Data.GoldPerClickLevel}";
-        GetBind<TMP_Text>((int)Texts.ClickUpgradeCostText).text = $"Next Cost: {GetModel().NextGoldPerClickCost}";
-    }
-
-    private void UpdateGoldPerSecUpdateUI()
-    {
-        GetBind<TMP_Text>((int)Texts.GoldPerSecText).text = $"+{GetModel().CurrentGoldPerSec} / Sec";
-        GetBind<TMP_Text>((int)Texts.SecUpgradeLevelText).text = $"Next Lv: {GetModel().Data.GoldPerSecLevel}";
-        GetBind<TMP_Text>((int)Texts.SecUpgradeCostText).text = $"Next Cost: {GetModel().NextGoldPerSecCost}";
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.ComponentModel;
 using UnityEngine;
 
 /// <summary>
@@ -12,17 +14,31 @@ public class ClickerModel : ModelBase
         SecAddGold,
         UpgradeGoldPerClick,
         UpgradeGoldPerSec,
-        StartGetGoldPerSec
     }
     
     [SerializeField] private Transform circle;                                  // 화면 중앙의 원 트랜스폼
 
     public PlayerData Data { get; private set; } = new();
-
-    public int CurrentGoldPerClick => _goldPerClickUpgrade.values[Data.GoldPerClickLevel];
-    public int CurrentGoldPerSec => _goldPerSecUpgrade.values[Data.GoldPerSecLevel];
-    public int NextGoldPerClickCost => _goldPerClickUpgrade.costs[Data.GoldPerClickLevel+1];    // 다음 레벨의 클릭 당 골드 업그레이드 비용
-    public int NextGoldPerSecCost => _goldPerSecUpgrade.costs[Data.GoldPerSecLevel+1];          // 다음 레벨의 초 당 골드 업그레이드 비용
+    public int CurrentGoldPerClick
+    {
+        get => GetProperty<int>();
+        set => SetProperty(value);
+    }
+    public int CurrentGoldPerSec
+    {
+        get => GetProperty<int>();
+        set => SetProperty(value);
+    }
+    public int NextGoldPerClickCost
+    {
+        get => GetProperty<int>();
+        set => SetProperty(value);
+    }
+    public int NextGoldPerSecCost
+    {
+        get => GetProperty<int>();
+        set => SetProperty(value);
+    }
 
     private Upgrade _goldPerClickUpgrade;                                                       // 클릭 당 골드 업그레이드 정보
     private Upgrade _goldPerSecUpgrade;                                                         // 초 당 골드 업그레이드 정보
@@ -31,27 +47,44 @@ public class ClickerModel : ModelBase
     private const string _GOLD_PER_SEC_LEVEL_KEY = "ClickerGoldPerSecLevel";                    // 초 당 골드 업그레이드 레벨 저장을 위한 PlayerPrefs 키 값
     private const string _GOLD_KEY = "ClickerGold";                                             // 현재 보유 골드 저장을 위한 PlayerPrefs 키 값
     
-    private int _currentGoldPerClick;
-    private int _currentGoldPerSec;
     private readonly float _scaleUpTime = 0.1f;                                                 // 원의 사이즈 업이 걸리는 시간
     private readonly WaitForSeconds _goldPerSecDelay = new(1f);                                 // 1초 딜레이
 
-    protected override void InitializeMethods()
+    public override void InitializeModelMethods()
     {
-        base.InitializeMethods();
+        base.InitializeModelMethods();
         
-        AddMethod(MethodType.ClickAddGold, ClickAddGold);
-        AddMethod(MethodType.SecAddGold, SecAddGold);
-        AddMethod(MethodType.UpgradeGoldPerClick, UpgradeGoldPerClick);
-        AddMethod(MethodType.UpgradeGoldPerSec, UpgradeGoldPerSec);
-        AddMethod(MethodType.StartGetGoldPerSec, StartGetGoldPerSec);
+        AddMethod(MethodType.ClickAddGold, (Action)ClickAddGold);
+        AddMethod(MethodType.SecAddGold, (Action)SecAddGold);
+        AddMethod(MethodType.UpgradeGoldPerClick, (Action)UpgradeGoldPerClick);
+        AddMethod(MethodType.UpgradeGoldPerSec, (Action)UpgradeGoldPerSec);
     }
+
     protected override void InitializeNestedProperties()
     {
         base.InitializeNestedProperties();
         
         Data.PropertyChanged += OnNestedPropertyChanged;
     }
+
+    protected override void OnNestedPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        base.OnNestedPropertyChanged(sender, e);
+
+        switch (e.PropertyName)
+        {
+            case nameof(Data.Gold):
+                SetProperty(Data.Gold, nameof(Data.Gold));
+                break;
+            case nameof(Data.GoldPerClickLevel):
+                SetProperty(Data.GoldPerClickLevel, nameof(Data.GoldPerClickLevel));
+                break;
+            case nameof(Data.GoldPerSecLevel):
+                SetProperty(Data.GoldPerSecLevel, nameof(Data.GoldPerSecLevel));
+                break;
+        }
+    }
+
     protected override void InitializeProperties()
     {
         _goldPerClickUpgrade = Resources.Load<Upgrade>("Clicker/SO/GoldPerClick");
@@ -60,6 +93,18 @@ public class ClickerModel : ModelBase
         Data.Gold = PlayerPrefs.GetInt(_GOLD_KEY,0);
         Data.GoldPerClickLevel = PlayerPrefs.GetInt(_GOLD_PER_CLICK_LEVEL_KEY, 0);
         Data.GoldPerSecLevel = PlayerPrefs.GetInt(_GOLD_PER_SEC_LEVEL_KEY, 0);
+        
+        CurrentGoldPerClick = _goldPerClickUpgrade.values[Data.GoldPerClickLevel];
+        CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.GoldPerSecLevel];
+        NextGoldPerClickCost = _goldPerClickUpgrade.costs[Data.GoldPerClickLevel+1];
+        NextGoldPerSecCost = _goldPerSecUpgrade.costs[Data.GoldPerSecLevel+1];
+    }
+
+    protected override void InitializeInvokeMethod()
+    {
+        base.InitializeInvokeMethod();
+        
+        StartGetGoldPerSec();
     }
 
     private void StartGetGoldPerSec() => StartCoroutine(GetGoldPerSec()); 
@@ -94,6 +139,10 @@ public class ClickerModel : ModelBase
 
         Data.Gold -= NextGoldPerClickCost;
         Data.GoldPerClickLevel++;
+        
+        CurrentGoldPerClick = _goldPerClickUpgrade.values[Data.GoldPerClickLevel];
+        NextGoldPerClickCost = _goldPerClickUpgrade.costs[Data.GoldPerClickLevel+1];
+        
         StartCoroutine(SizeUp(Data.Gold));
     }
     
@@ -110,6 +159,10 @@ public class ClickerModel : ModelBase
 
         Data.Gold -= NextGoldPerSecCost;
         Data.GoldPerSecLevel++;
+        
+        CurrentGoldPerSec = _goldPerSecUpgrade.values[Data.GoldPerSecLevel];
+        NextGoldPerSecCost = _goldPerSecUpgrade.costs[Data.GoldPerSecLevel+1];
+        
         StartCoroutine(SizeUp(Data.Gold));
     }
 
