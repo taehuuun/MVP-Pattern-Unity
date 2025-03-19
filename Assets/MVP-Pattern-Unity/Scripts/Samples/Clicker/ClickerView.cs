@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine.UI;
+using MethodType = ClickerModel.MethodType;
 
 public class ClickerView : ViewBase
 {
@@ -31,9 +32,9 @@ public class ClickerView : ViewBase
     protected override void InitializeEventListeners()
     {
         base.InitializeEventListeners();
-        GetBind<Button>((int)Buttons.TouchPanelBtn).onClick.AddListener(() => InvokeMethod(ClickerModel.MethodType.ClickAddGold));
-        GetBind<Button>((int)Buttons.ClickUpgradeBtn).onClick.AddListener(() => InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerClick));
-        GetBind<Button>((int)Buttons.SecUpgradeBtn).onClick.AddListener(() => InvokeMethod(ClickerModel.MethodType.UpgradeGoldPerSec));
+        GetBind<Button>((int)Buttons.TouchPanelBtn).onClick.AddListener(() => InvokeMethod(MethodType.ClickAddGold));
+        GetBind<Button>((int)Buttons.ClickUpgradeBtn).onClick.AddListener(() => InvokeMethod(MethodType.UpgradeGoldPerClick));
+        GetBind<Button>((int)Buttons.SecUpgradeBtn).onClick.AddListener(() => InvokeMethod(MethodType.UpgradeGoldPerSec));
     }
 
     protected override void UpdateView(string propertyName)

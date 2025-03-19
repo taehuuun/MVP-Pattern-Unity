@@ -1,7 +1,5 @@
-public class #SCRIPTNAME#View : ViewBase<#SCRIPTNAME#Model>
+using MethodType = #SCRIPTNAME#Model.MethodType; 
+
+public class #SCRIPTNAME#View : ViewBase
 {
-    public override void UpdateView(string propertyName)
-    {
-        
-    }
 }
